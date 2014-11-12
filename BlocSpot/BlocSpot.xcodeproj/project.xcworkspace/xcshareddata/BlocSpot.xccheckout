@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C14A851E-B56C-46A7-8591-E05DDC6C1BD1</string>
+	<key>IDESourceControlProjectName</key>
+	<string>BlocSpot</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DAC21D5D894748A5E1A85D0DBDAEA8FF2EBBE4FC</key>
+		<string>https://github.com/ahlerttd/BlocSpot.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>BlocSpot/BlocSpot.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>DAC21D5D894748A5E1A85D0DBDAEA8FF2EBBE4FC</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ahlerttd/BlocSpot.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DAC21D5D894748A5E1A85D0DBDAEA8FF2EBBE4FC</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DAC21D5D894748A5E1A85D0DBDAEA8FF2EBBE4FC</string>
+			<key>IDESourceControlWCCName</key>
+			<string>BlocSpot</string>
+		</dict>
+	</array>
+</dict>
+</plist>
