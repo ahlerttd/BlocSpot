@@ -11,19 +11,32 @@
 #import "MapAnnotationViewController.h"
 #import "WYPopoverController.h"
 
+@class MapAnnotationViewController;
 
-@interface MapKitViewController () <MapKitViewControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, WYPopoverControllerDelegate>
+
+@interface MapKitViewController () <MapKitViewControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, WYPopoverControllerDelegate, MapAnnotationViewControllerDelegate>
+
+
+    {
+        WYPopoverController* popoverController;
+    }
+
+
+
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, retain) CLLocation *initialLocation;
 @property (nonatomic, strong) WYPopoverController *annotationPopoverController;
+@property (nonatomic, strong) MyAnnotation *annotation;
+@property (nonatomic, strong) NSString *annotationNotes;
+
 
 @end
 
 @implementation MapKitViewController {
     MKLocalSearch *localSearch;
     MKLocalSearchResponse *results;
-    WYPopoverController* popoverController;
+    
 }
 
 - (void)viewDidLoad {
@@ -122,8 +135,14 @@
     
     [mapView deselectAnnotation:view.annotation animated:YES];
     
-    MapAnnotationViewController *ycvc = [[MapAnnotationViewController alloc] init];
+    
+    
+    MapAnnotationViewController *ycvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MapAnnotationViewController"];
+    
     WYPopoverController *poc = [[WYPopoverController alloc] initWithContentViewController:ycvc];
+    
+    ycvc.data = self.annotation.title;
+
     
     poc.delegate = self;
     self.annotationPopoverController = poc;
@@ -134,10 +153,32 @@
     
     [poc presentPopoverFromRect:view.bounds inView:view permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
     
+    }
+
+- (BOOL)popoverControllerShouldDismissPopover:(WYPopoverController *)controller
+{
+    return YES;
+}
+
+- (void)popoverControllerDidDismissPopover:(WYPopoverController *)controller;
+{
+    popoverController.delegate = nil;
+    popoverController = nil;
     
+    NSLog(@"Print dismiss");
+}
+
+- (void)dismissPop: (NSString *)value {
     
+    self.annotationNotes = value; // populates data from popover
+    NSLog(@"Print Annotation Notes %@", value);
     
 }
+
+
+
+
+
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 
@@ -252,17 +293,17 @@
     
     MKMapItem *item = results.mapItems[indexPath.row];
     
-    MyAnnotation *annotation = [[MyAnnotation alloc]init];
+    self.annotation = [[MyAnnotation alloc]init];
     
-    annotation.coordinate = item.placemark.coordinate;
-    annotation.title = item.name;
-    annotation.subtitle = item.placemark.addressDictionary[@"Street"];
+    self.annotation.coordinate = item.placemark.coordinate;
+    self.annotation.title = item.name;
+    self.annotation.subtitle = item.placemark.addressDictionary[@"Street"];
     
-    [self.mapView addAnnotation:annotation];
+    [self.mapView addAnnotation:self.annotation];
     
-    [self.mapView selectAnnotation:annotation animated:YES];
+    [self.mapView selectAnnotation:self.annotation animated:YES];
     
-    [self.mapView setCenterCoordinate:annotation.coordinate animated:YES];
+    [self.mapView setCenterCoordinate:self.annotation.coordinate animated:YES];
     
     [self.mapView setUserTrackingMode:MKUserTrackingModeNone];
     
@@ -270,28 +311,5 @@
     
 }
 
-
-/*-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
- {
- if([annotation isKindOfClass:[MyAnnotation class]])
- {
- MyAnnotation *myLocation = (MyAnnotation *)annotation;
- MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:@"MyAnnotation"];
- if(annotationView == nil)
- {
- annotationView = myLocation.annotationView;
- }
- else
- {
- annotationView.annotation = annotation;
- }
- return annotationView;
- }
- else
- {
- return nil;
- }
- }
- */
 
 @end

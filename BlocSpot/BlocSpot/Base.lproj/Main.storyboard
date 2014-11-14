@@ -146,30 +146,55 @@
         <!--Map Annotation View Controller-->
         <scene sceneID="vCv-wk-yx5">
             <objects>
-                <viewController id="afV-Z7-40N" customClass="MapAnnotationViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MapAnnotationViewController" id="afV-Z7-40N" customClass="MapAnnotationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9xg-xk-X14"/>
                         <viewControllerLayoutGuide type="bottom" id="jiP-UT-ULU"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Xe2-vD-LhN">
-                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pop" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="90m-th-kqd">
-                                <rect key="frame" x="16" y="39" width="32" height="21"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Location Notes" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cmZ-vT-NYJ">
+                                <rect key="frame" x="16" y="97" width="168" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hiQ-Nf-EYS">
+                                <rect key="frame" x="76" y="49" width="62" height="40"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VyZ-Ss-PS2">
+                                <rect key="frame" x="16" y="130" width="34" height="30"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="goBack:" destination="afV-Z7-40N" eventType="touchUpInside" id="Wxu-QN-nZc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="cmZ-vT-NYJ" firstAttribute="top" secondItem="hiQ-Nf-EYS" secondAttribute="bottom" constant="8" id="62E-H1-dTN"/>
+                            <constraint firstItem="hiQ-Nf-EYS" firstAttribute="leading" secondItem="Xe2-vD-LhN" secondAttribute="leadingMargin" id="7Fb-9A-tNj"/>
+                            <constraint firstItem="hiQ-Nf-EYS" firstAttribute="top" secondItem="9xg-xk-X14" secondAttribute="bottom" constant="15" id="SKb-sC-D0y"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hiQ-Nf-EYS" secondAttribute="trailing" id="glr-tX-Ihn"/>
+                        </constraints>
                     </view>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="100" height="100"/>
+                    <size key="freeformSize" width="200" height="300"/>
+                    <connections>
+                        <outlet property="notes" destination="cmZ-vT-NYJ" id="Ihd-cc-P3u"/>
+                        <outlet property="titlePopover" destination="hiQ-Nf-EYS" id="vZm-Qn-a57"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RvD-ee-tU7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="34" y="17"/>
+            <point key="canvasLocation" x="96" y="57"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wPd-M0-gVY">

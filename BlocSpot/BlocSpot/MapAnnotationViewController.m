@@ -7,10 +7,12 @@
 //
 
 #import "MapAnnotationViewController.h"
+#import "MapKitViewController.h"
 
-@interface MapAnnotationViewController ()
+@interface MapAnnotationViewController () 
 
 @property (nonatomic, strong) UITextField *textField;
+
 
 @end
 
@@ -19,20 +21,24 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.textField = [[UITextField alloc ] init];
-    self.textField.placeholder = NSLocalizedString(@"Website URL", @"Placeholder text for web browser URL field");
     
+    self.titlePopover.text = self.data;
     
+    self.mapNotesData = self.notes.text;
     
     
     
     // Do any additional setup after loading the view.
 }
 
+- (void)viewWillAppear: (BOOL)animated {
+    [self.notes setText:self.mapNotesData];
+}
+
+
 - (void) viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
-    self.textField.frame = CGRectMake(0, 0, 50, 50);
     
 }
 
@@ -42,7 +48,12 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+- (IBAction)goBack: (id)sender {
+    
+    [self.delegate dismissPop:[self.notes text]];
+    NSLog(@"goback: sender: %@", [self.notes text]);
+    
+}
 
 /*
 #pragma mark - Navigation
@@ -53,5 +64,6 @@
     // Pass the selected object to the new view controller.
 }
 */
+
 
 @end

@@ -204,6 +204,7 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
 
 - (void)popoverControllerDidPresentPopover:(WYPopoverController *)popoverController;
 
+
 - (void)popoverControllerDidDismissPopover:(WYPopoverController *)popoverController;
 
 - (void)popoverController:(WYPopoverController *)popoverController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView **)view;

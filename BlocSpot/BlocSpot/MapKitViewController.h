@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "MapAnnotationViewController.h"
+
 
 @class MapKitViewController;
 @protocol MapKitViewControllerDelegate <NSObject>
@@ -25,5 +27,7 @@
 
 
 - (IBAction)listView:(id)sender;
+
+
 
 @end

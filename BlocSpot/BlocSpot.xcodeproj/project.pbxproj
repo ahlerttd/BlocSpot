@@ -22,6 +22,8 @@
 		177B4A5B1A0D4ED300D9CC35 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 177B4A5A1A0D4ED300D9CC35 /* MyAnnotation.m */; };
 		177B4A5E1A114E4A00D9CC35 /* MapAnnotationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 177B4A5D1A114E4A00D9CC35 /* MapAnnotationViewController.m */; };
 		177B4A661A11613100D9CC35 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 177B4A651A11613100D9CC35 /* QuartzCore.framework */; };
+		1797932A1A130A73003A7BF5 /* POI.m in Sources */ = {isa = PBXBuildFile; fileRef = 179793291A130A73003A7BF5 /* POI.m */; };
+		179793301A130B26003A7BF5 /* POICategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 1797932F1A130B26003A7BF5 /* POICategory.m */; };
 		F251F0DE08F0D76150664A29 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FBA60259C4670E6EE211F39 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +66,10 @@
 		177B4A5C1A114E4A00D9CC35 /* MapAnnotationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapAnnotationViewController.h; sourceTree = "<group>"; };
 		177B4A5D1A114E4A00D9CC35 /* MapAnnotationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapAnnotationViewController.m; sourceTree = "<group>"; };
 		177B4A651A11613100D9CC35 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		179793281A130A73003A7BF5 /* POI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POI.h; sourceTree = "<group>"; };
+		179793291A130A73003A7BF5 /* POI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POI.m; sourceTree = "<group>"; };
+		1797932E1A130B26003A7BF5 /* POICategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POICategory.h; sourceTree = "<group>"; };
+		1797932F1A130B26003A7BF5 /* POICategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POICategory.m; sourceTree = "<group>"; };
 		A14C3DBED26D4DAA1391C765 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,6 +136,10 @@
 				177B4A321A0AD35400D9CC35 /* Images.xcassets */,
 				177B4A341A0AD35400D9CC35 /* LaunchScreen.xib */,
 				177B4A291A0AD35400D9CC35 /* BlocSpot.xcdatamodeld */,
+				1797932E1A130B26003A7BF5 /* POICategory.h */,
+				1797932F1A130B26003A7BF5 /* POICategory.m */,
+				179793281A130A73003A7BF5 /* POI.h */,
+				179793291A130A73003A7BF5 /* POI.m */,
 				177B4A221A0AD35400D9CC35 /* Supporting Files */,
 			);
 			path = BlocSpot;
@@ -319,6 +329,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1797932A1A130A73003A7BF5 /* POI.m in Sources */,
 				177B4A581A0D453900D9CC35 /* MapViewNavigationBar.m in Sources */,
 				177B4A551A0D436900D9CC35 /* MapListNavigationBar.m in Sources */,
 				177B4A5E1A114E4A00D9CC35 /* MapAnnotationViewController.m in Sources */,
@@ -327,6 +338,7 @@
 				177B4A2B1A0AD35400D9CC35 /* BlocSpot.xcdatamodeld in Sources */,
 				177B4A281A0AD35400D9CC35 /* AppDelegate.m in Sources */,
 				177B4A4F1A0C23E300D9CC35 /* LocationsViewController.m in Sources */,
+				179793301A130B26003A7BF5 /* POICategory.m in Sources */,
 				177B4A251A0AD35400D9CC35 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
