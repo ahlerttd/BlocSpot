@@ -138,6 +138,7 @@
     
     
     MapAnnotationViewController *ycvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MapAnnotationViewController"];
+    ycvc.delegate = self;
     
     WYPopoverController *poc = [[WYPopoverController alloc] initWithContentViewController:ycvc];
     
