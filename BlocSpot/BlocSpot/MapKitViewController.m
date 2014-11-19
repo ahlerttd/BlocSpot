@@ -10,11 +10,14 @@
 #import "MyAnnotation.h"
 #import "MapAnnotationViewController.h"
 #import "WYPopoverController.h"
+#import "AppDelegate.h"
+#import "POI.h"
+#import "POICategory.h"
 
 @class MapAnnotationViewController;
 
 
-@interface MapKitViewController () <MapKitViewControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, WYPopoverControllerDelegate, MapAnnotationViewControllerDelegate>
+@interface MapKitViewController () <MapKitViewControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, WYPopoverControllerDelegate, MapAnnotationViewControllerDelegate, NSFetchedResultsControllerDelegate>
 
 
     {
@@ -29,6 +32,8 @@
 @property (nonatomic, strong) WYPopoverController *annotationPopoverController;
 @property (nonatomic, strong) MyAnnotation *annotation;
 @property (nonatomic, strong) NSString *annotationNotes;
+@property (nonatomic, strong) NSString *annotationTitleSelected;
+@property NSFetchedResultsController *frc;
 
 
 @end
@@ -41,6 +46,36 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    AppDelegate *appDelegate =
+    [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext *context =
+    [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"POI" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setResultType:NSDictionaryResultType];
+    [fetchRequest setReturnsDistinctResults:YES];
+    [fetchRequest setPropertiesToFetch:[NSArray arrayWithObjects: @"title", @"notes", @"latitude", @"longitude", @"isvisited", @"id", nil]];
+    
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects: sortDescriptor, nil];
+    
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    
+    self.frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:NULL cacheName:NULL];
+    
+    self.frc.delegate = nil;
+    [self.frc performFetch:NULL];
+    
+    NSArray *fetchedObjects = [self.frc fetchedObjects];
+    
+    NSLog(@"Fetched objects %@", fetchedObjects);
+    
     
     [self.searchDisplayController setDelegate:self];
     [self.searchBar setDelegate:self];
@@ -69,34 +104,15 @@
     [self.mapView setRegion:startRegion animated:YES];
     
     
-    CLLocationCoordinate2D annotationCoordinate = CLLocationCoordinate2DMake(39.432679, -84.217259);
-    /*MyAnnotation *annotation = [[MyAnnotation alloc]init];
-     annotation.coordinate = annotationCoordinate;
-     [self.mapView addAnnotation:annotation];
-     annotation.title = @"Lake Eola";
-     annotation.subtitle = @"Cool swans";*/
+  
     
-    NSArray *locations = @[
-                           @{@"name": @"Overly Hautz",
-                             @"lat": @39.432679,
-                             @"lng": @-84.217259},
-                           @{@"name": @"Golden Lamb",
-                             @"lat": @39.452679,
-                             @"lng": @-84.217259},
-                           @{@"name": @"Train Station",
-                             @"lat": @39.492679,
-                             @"lng": @-84.217259}
-                           
-                           ];
-    
-    
-    for(NSDictionary *location in locations) {
+    for(NSDictionary *location in fetchedObjects) {
         CLLocationCoordinate2D annotationCoordinate =
-        CLLocationCoordinate2DMake([location [@"lat"] doubleValue], [location [@"lng"]doubleValue]);
+        CLLocationCoordinate2DMake([location [@"latitude"] doubleValue], [location [@"longitude"]doubleValue]);
         MyAnnotation *annotation = [[MyAnnotation alloc]init];
         annotation.coordinate = annotationCoordinate;
-        annotation.title = location[@"name"];
-        annotation.subtitle = nil;
+        annotation.title = location[@"title"];
+        annotation.subtitle =  nil;
         [self.mapView addAnnotation:annotation];
     }
     
@@ -138,10 +154,15 @@
     
     
     MapAnnotationViewController *ycvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MapAnnotationViewController"];
+    ycvc.delegate = self;
     
     WYPopoverController *poc = [[WYPopoverController alloc] initWithContentViewController:ycvc];
     
-    ycvc.data = self.annotation.title;
+    ycvc.data = self.annotationTitleSelected;
+    ycvc.mapNotesData = self.annotationNotes;
+    
+    
+  
 
     
     poc.delegate = self;
@@ -154,6 +175,55 @@
     [poc presentPopoverFromRect:view.bounds inView:view permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
     
     }
+
+
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
+    
+    MyAnnotation *annotation = view.annotation;
+    
+    self.annotationTitleSelected = annotation.title;
+    
+    
+    AppDelegate *appDelegate =
+    [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext *context =
+    [appDelegate managedObjectContext];
+
+    NSFetchRequest * request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"POI" inManagedObjectContext:context]];
+    [request setResultType:NSDictionaryResultType];
+    [request setReturnsDistinctResults:YES];
+    [request setPropertiesToFetch:[NSArray arrayWithObjects: @"title", @"notes", @"latitude", @"longitude", @"isvisited", @"id", nil]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"(title ==[c] %@)", annotation.title]];
+    NSArray *results = [context executeFetchRequest:request error:nil];
+    
+    if (results.count == 0)
+    {
+        self.annotationNotes = nil;
+    }
+    else
+    {
+        
+        for(NSDictionary *location in results) {
+        
+        NSLog(@"Results %@", results);
+            
+            self.annotationNotes = location [@"notes"];
+            
+            NSLog(@"Notes %@", self.annotationNotes);
+            
+        }
+        
+    }
+    
+  
+    
+    
+    
+    
+}
+
 
 - (BOOL)popoverControllerShouldDismissPopover:(WYPopoverController *)controller
 {
@@ -172,6 +242,33 @@
     
     self.annotationNotes = value; // populates data from popover
     NSLog(@"Print Annotation Notes %@", value);
+    
+    AppDelegate *appDelegate =
+    [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext *context =
+    [appDelegate managedObjectContext];
+    
+    POI *POI;
+    POI = [NSEntityDescription
+           insertNewObjectForEntityForName:@"POI"
+           inManagedObjectContext:context];
+    
+    if (self.annotation.title.length > 0) {
+        POI.title = self.annotation.title;
+    }
+    POI.notes = self.annotationNotes;
+    
+    
+    
+    POI.latitude = [NSNumber numberWithDouble: self.annotation.coordinate.latitude];
+    POI.longitude = [NSNumber numberWithDouble:self.annotation.coordinate.longitude];
+    
+    NSLog(@"Testing correct latitude %2@", POI.latitude);
+    
+    
+    [context save:NULL];
+    
     
 }
 
@@ -310,6 +407,16 @@
     
     
 }
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if (sender != self.list) return;
+    
+    
+}
+
+
+
 
 
 @end

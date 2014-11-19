@@ -41,6 +41,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="fpn-5w-E2Z" kind="modal" identifier="editSpot" id="ZsW-ZH-g0l"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -57,6 +60,7 @@
                         <barButtonItem key="rightBarButtonItem" image="filter-25" id="9xF-jd-5Ki"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="notesSearchBar" destination="ZvC-Uk-eKs" id="556-5u-UhK"/>
                         <outlet property="searchDisplayController" destination="e9S-dM-HhA" id="llX-sG-euC"/>
                     </connections>
                 </tableViewController>
@@ -96,6 +100,7 @@
                                         <barButtonItem key="leftBarButtonItem" image="menu-25" id="0pX-Xa-nzO">
                                             <connections>
                                                 <action selector="listView:" destination="fpn-5w-E2Z" id="D2C-8b-iCz"/>
+                                                <segue destination="Svf-Ey-ocz" kind="custom" customClass="DismissSegue" id="INa-yo-y5z"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" image="filter-25" id="0Y0-Xl-CFO"/>
@@ -126,6 +131,7 @@
                     </view>
                     <connections>
                         <outlet property="MapView" destination="7nN-bp-Yje" id="C0q-Wc-CHN"/>
+                        <outlet property="list" destination="0pX-Xa-nzO" id="dFe-CF-s6J"/>
                         <outlet property="searchBar" destination="g9M-Df-p5u" id="DsY-OU-ohf"/>
                         <outlet property="searchDisplayController" destination="DPN-GY-aoh" id="OvV-ji-vC3"/>
                     </connections>
@@ -141,7 +147,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="-321" y="17"/>
+            <point key="canvasLocation" x="-263" y="16"/>
         </scene>
         <!--Map Annotation View Controller-->
         <scene sceneID="vCv-wk-yx5">
@@ -194,7 +200,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RvD-ee-tU7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="96" y="57"/>
+            <point key="canvasLocation" x="243" y="52"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wPd-M0-gVY">
@@ -223,4 +229,8 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="ZsW-ZH-g0l"/>
+        <segue reference="INa-yo-y5z"/>
+    </inferredMetricsTieBreakers>
 </document>

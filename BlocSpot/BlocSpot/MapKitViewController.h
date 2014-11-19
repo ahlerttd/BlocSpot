@@ -20,10 +20,12 @@
 
 @interface MapKitViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate>
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *list;
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property BOOL userLocationUpdated;
 @property (nonatomic, weak) id <MapKitViewControllerDelegate> delegate;
+
 
 
 - (IBAction)listView:(id)sender;

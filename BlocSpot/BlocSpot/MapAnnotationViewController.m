@@ -22,9 +22,9 @@
     [super viewDidLoad];
     
     
-    self.titlePopover.text = self.data;
+    self.titlePopover.text = self.data;    
     
-    self.mapNotesData = self.notes.text;
+    self.textField.text = self.mapNotesData;
     
     
     

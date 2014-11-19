@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LocationsViewController : UITableViewController
+@interface LocationsViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate>
+@property (weak, nonatomic) IBOutlet UISearchBar *notesSearchBar;
 
 @end
