@@ -225,6 +225,8 @@
 }
 
 
+
+
 - (BOOL)popoverControllerShouldDismissPopover:(WYPopoverController *)controller
 {
     return YES;
@@ -249,6 +251,22 @@
     NSManagedObjectContext *context =
     [appDelegate managedObjectContext];
     
+    NSFetchRequest * request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"POI" inManagedObjectContext:context]];
+    [request setResultType:NSDictionaryResultType];
+    [request setReturnsDistinctResults:YES];
+    [request setPropertiesToFetch:[NSArray arrayWithObjects: @"title", @"notes", @"latitude", @"longitude", @"isvisited", @"id", nil]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"(title ==[c] %@)", self.annotationTitleSelected]];
+    NSLog(@"Annotation Title %@", self.annotationTitleSelected);
+    NSArray *results = [context executeFetchRequest:request error:nil];
+    
+    
+    
+    if (results.count == 0)
+    {
+    
+    
+    
     POI *POI;
     POI = [NSEntityDescription
            insertNewObjectForEntityForName:@"POI"
@@ -264,10 +282,24 @@
     POI.latitude = [NSNumber numberWithDouble: self.annotation.coordinate.latitude];
     POI.longitude = [NSNumber numberWithDouble:self.annotation.coordinate.longitude];
     
-    NSLog(@"Testing correct latitude %2@", POI.latitude);
-    
-    
     [context save:NULL];
+    
+    
+    
+    
+    }
+    else {
+        
+        NSLog(@"Edit a specific field");
+        
+        NSManagedObject* favoritsGrabbed = [results objectAtIndex:0];
+        NSLog(@"Managed Object %@", favoritsGrabbed);
+        [favoritsGrabbed setValue:self.annotationNotes forKey:@"notes"];
+        NSLog(@"Annoation Notes  %@", self.annotationNotes);
+        
+        [context save:NULL];
+    
+    }
     
     
 }
