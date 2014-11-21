@@ -9,7 +9,7 @@
 #import "MapAnnotationViewController.h"
 #import "MapKitViewController.h"
 
-@interface MapAnnotationViewController () 
+@interface MapAnnotationViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) UITextField *textField;
 
@@ -43,6 +43,14 @@
 }
 
 
+- (void) viewDidDisappear:(BOOL)animated{
+    [self.delegate dismissPop:[self.notes text]];
+    NSLog(@"goback: sender: %@", [self.notes text]);
+    
+    
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -50,10 +58,38 @@
 
 - (IBAction)goBack: (id)sender {
     
-    [self.delegate dismissPop:[self.notes text]];
-    NSLog(@"goback: sender: %@", [self.notes text]);
+   
     
 }
+
+- (IBAction)showCategoryActionSheet:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Pick a category:"
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:@"Food", @"Gas", @"Hotel", @"Entertainment", @"Shopping", nil];
+     
+    [actionSheet showInView:self.view];
+    
+    
+    
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    self.categoryPicked = buttonTitle;
+    
+    [self.delegate addCategoryViewController:self didSelectCategory:self.categoryPicked];
+    
+}
+
+
+
+
+
+
+
 
 /*
 #pragma mark - Navigation

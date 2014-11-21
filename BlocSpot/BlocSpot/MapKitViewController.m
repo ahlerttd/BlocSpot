@@ -33,6 +33,7 @@
 @property (nonatomic, strong) MyAnnotation *annotation;
 @property (nonatomic, strong) NSString *annotationNotes;
 @property (nonatomic, strong) NSString *annotationTitleSelected;
+@property (nonatomic, strong) NSString *categorySelected;
 @property NSFetchedResultsController *frc;
 
 
@@ -217,11 +218,6 @@
         
     }
     
-  
-    
-    
-    
-    
 }
 
 
@@ -243,7 +239,7 @@
 - (void)dismissPop: (NSString *)value {
     
     self.annotationNotes = value; // populates data from popover
-    NSLog(@"Print Annotation Notes %@", value);
+    
     
     AppDelegate *appDelegate =
     [[UIApplication sharedApplication] delegate];
@@ -276,12 +272,19 @@
         POI.title = self.annotation.title;
     }
     POI.notes = self.annotationNotes;
-    
-    
-    
     POI.latitude = [NSNumber numberWithDouble: self.annotation.coordinate.latitude];
     POI.longitude = [NSNumber numberWithDouble:self.annotation.coordinate.longitude];
     
+        
+    POICategory *POICategory;
+        POICategory = [NSEntityDescription
+                       insertNewObjectForEntityForName:@"POICategory"
+                       inManagedObjectContext:context];
+    
+        POICategory.name = self.categorySelected;
+        
+        
+        
     [context save:NULL];
     
     
@@ -304,7 +307,12 @@
     
 }
 
-
+-(void)addCategoryViewController:(MapAnnotationViewController *)controller didSelectCategory:(NSString *)item{
+    
+    self.categorySelected = item;
+    NSLog(@"Item %@", item);
+    
+}
 
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B17" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="kYh-tp-hec">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="kYh-tp-hec">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -161,7 +161,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="200" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Location Notes" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cmZ-vT-NYJ">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Location Notes" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cmZ-vT-NYJ">
                                 <rect key="frame" x="16" y="97" width="168" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -172,22 +172,25 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VyZ-Ss-PS2">
-                                <rect key="frame" x="16" y="130" width="34" height="30"/>
-                                <state key="normal" title="Save">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cLN-9X-pIC">
+                                <rect key="frame" x="16" y="135" width="67" height="30"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
+                                <state key="normal" title="Category"/>
                                 <connections>
-                                    <action selector="goBack:" destination="afV-Z7-40N" eventType="touchUpInside" id="Wxu-QN-nZc"/>
+                                    <action selector="showCategoryActionSheet:" destination="afV-Z7-40N" eventType="touchUpInside" id="FOP-Oa-yM0"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="cmZ-vT-NYJ" firstAttribute="top" secondItem="hiQ-Nf-EYS" secondAttribute="bottom" constant="8" id="62E-H1-dTN"/>
                             <constraint firstItem="hiQ-Nf-EYS" firstAttribute="leading" secondItem="Xe2-vD-LhN" secondAttribute="leadingMargin" id="7Fb-9A-tNj"/>
-                            <constraint firstItem="hiQ-Nf-EYS" firstAttribute="top" secondItem="9xg-xk-X14" secondAttribute="bottom" constant="15" id="SKb-sC-D0y"/>
+                            <constraint firstItem="cmZ-vT-NYJ" firstAttribute="leading" secondItem="Xe2-vD-LhN" secondAttribute="leadingMargin" id="P6i-gr-4uI"/>
+                            <constraint firstItem="hiQ-Nf-EYS" firstAttribute="top" secondItem="9xg-xk-X14" secondAttribute="bottom" constant="5" id="SKb-sC-D0y"/>
+                            <constraint firstItem="cmZ-vT-NYJ" firstAttribute="trailing" secondItem="Xe2-vD-LhN" secondAttribute="trailingMargin" id="aou-eC-L7w"/>
                             <constraint firstAttribute="trailingMargin" secondItem="hiQ-Nf-EYS" secondAttribute="trailing" id="glr-tX-Ihn"/>
+                            <constraint firstItem="jiP-UT-ULU" firstAttribute="top" secondItem="cLN-9X-pIC" secondAttribute="bottom" constant="20" id="o1Y-zn-AIb"/>
+                            <constraint firstItem="cmZ-vT-NYJ" firstAttribute="top" secondItem="hiQ-Nf-EYS" secondAttribute="bottom" constant="5" id="pvM-9P-n0X"/>
+                            <constraint firstItem="cLN-9X-pIC" firstAttribute="leading" secondItem="Xe2-vD-LhN" secondAttribute="leadingMargin" id="tEJ-tH-nfw"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>

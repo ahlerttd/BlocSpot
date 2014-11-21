@@ -19,13 +19,17 @@
 @property (nonatomic, retain) NSString *data;
 @property (nonatomic, retain) NSString *mapNotesData;
 @property (weak) id <MapAnnotationViewControllerDelegate> delegate;
+@property (weak, nonatomic) NSString *categoryPicked;
 - (IBAction)goBack:(id)sender;
+- (IBAction)showCategoryActionSheet:(id)sender;
 
 @end
 
 @protocol MapAnnotationViewControllerDelegate <NSObject>
 
 -(void)dismissPop: (NSString *)value;
+-(void)addCategoryViewController:(MapAnnotationViewController *)controller didSelectCategory:(NSString *)item;
+
 
 
 
