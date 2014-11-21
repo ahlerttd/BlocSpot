@@ -20,9 +20,9 @@
 @interface MapKitViewController () <MapKitViewControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, WYPopoverControllerDelegate, MapAnnotationViewControllerDelegate, NSFetchedResultsControllerDelegate>
 
 
-    {
-        WYPopoverController* popoverController;
-    }
+{
+    WYPopoverController* popoverController;
+}
 
 
 
@@ -105,7 +105,7 @@
     [self.mapView setRegion:startRegion animated:YES];
     
     
-  
+    
     
     for(NSDictionary *location in fetchedObjects) {
         CLLocationCoordinate2D annotationCoordinate =
@@ -163,19 +163,19 @@
     ycvc.mapNotesData = self.annotationNotes;
     
     
-  
-
+    
+    
     
     poc.delegate = self;
     self.annotationPopoverController = poc;
     
-
+    
     poc.popoverContentSize = CGSizeMake(300, 200);
     
     
     [poc presentPopoverFromRect:view.bounds inView:view permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
     
-    }
+}
 
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
@@ -190,7 +190,7 @@
     
     NSManagedObjectContext *context =
     [appDelegate managedObjectContext];
-
+    
     NSFetchRequest * request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"POI" inManagedObjectContext:context]];
     [request setResultType:NSDictionaryResultType];
@@ -207,8 +207,8 @@
     {
         
         for(NSDictionary *location in results) {
-        
-        NSLog(@"Results %@", results);
+            
+            NSLog(@"Results %@", results);
             
             self.annotationNotes = location [@"notes"];
             
@@ -249,9 +249,8 @@
     
     NSFetchRequest * request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"POI" inManagedObjectContext:context]];
-    [request setResultType:NSDictionaryResultType];
+    [request setResultType:NSManagedObjectResultType];
     [request setReturnsDistinctResults:YES];
-    [request setPropertiesToFetch:[NSArray arrayWithObjects: @"title", @"notes", @"latitude", @"longitude", @"isvisited", @"id", nil]];
     [request setPredicate:[NSPredicate predicateWithFormat:@"(title ==[c] %@)", self.annotationTitleSelected]];
     NSLog(@"Annotation Title %@", self.annotationTitleSelected);
     NSArray *results = [context executeFetchRequest:request error:nil];
@@ -260,48 +259,43 @@
     
     if (results.count == 0)
     {
-    
-    
-    
-    POI *POI;
-    POI = [NSEntityDescription
-           insertNewObjectForEntityForName:@"POI"
-           inManagedObjectContext:context];
-    
-    if (self.annotation.title.length > 0) {
-        POI.title = self.annotation.title;
-    }
-    POI.notes = self.annotationNotes;
-    POI.latitude = [NSNumber numberWithDouble: self.annotation.coordinate.latitude];
-    POI.longitude = [NSNumber numberWithDouble:self.annotation.coordinate.longitude];
-    
-        
-    POICategory *POICategory;
-        POICategory = [NSEntityDescription
-                       insertNewObjectForEntityForName:@"POICategory"
-                       inManagedObjectContext:context];
-    
-        POICategory.name = self.categorySelected;
         
         
         
-    [context save:NULL];
-    
-    
-    
-    
+        POI *POI;
+        POI = [NSEntityDescription
+               insertNewObjectForEntityForName:@"POI"
+               inManagedObjectContext:context];
+        
+        if (self.annotation.title.length > 0) {
+            POI.title = self.annotation.title;
+        }
+        POI.notes = self.annotationNotes;
+        POI.latitude = [NSNumber numberWithDouble: self.annotation.coordinate.latitude];
+        POI.longitude = [NSNumber numberWithDouble:self.annotation.coordinate.longitude];
+        
+        
+        
+        
+        
+        
+        [context save:NULL];
+        
+        
+        
+        
     }
     else {
         
         NSLog(@"Edit a specific field");
         
-        NSManagedObject* favoritsGrabbed = [results objectAtIndex:0];
+        POI* favoritsGrabbed = [results objectAtIndex:0];
         NSLog(@"Managed Object %@", favoritsGrabbed);
-        [favoritsGrabbed setValue:self.annotationNotes forKey:@"notes"];
+        favoritsGrabbed.notes = self.annotationNotes;
         NSLog(@"Annoation Notes  %@", self.annotationNotes);
         
         [context save:NULL];
-    
+        
     }
     
     

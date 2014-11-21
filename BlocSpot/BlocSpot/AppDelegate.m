@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "POICategory.h"
+#import "UIColor+String.h"
 
 @interface AppDelegate ()
 
@@ -16,7 +18,58 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"POICategory"];
+    NSArray *results = [[self managedObjectContext] executeFetchRequest:request error:nil];
+    
+    
+    if(results.count == 0){
+        
+        POICategory *Food;
+        Food = [NSEntityDescription
+               insertNewObjectForEntityForName:@"POICategory"
+               inManagedObjectContext:[self managedObjectContext]];
+        
+        
+        Food.name = @"Food";
+        Food.color = [[UIColor redColor] toString];
+      
+        POICategory *Gas;
+        Gas = [NSEntityDescription
+                insertNewObjectForEntityForName:@"POICategory"
+                inManagedObjectContext:[self managedObjectContext]];
+        
+        
+        Gas.name = @"Gas";
+        Gas.color = [[UIColor greenColor] toString];
+        
+        
+        
+        POICategory *Shopping;
+        Shopping = [NSEntityDescription
+               insertNewObjectForEntityForName:@"POICategory"
+               inManagedObjectContext:[self managedObjectContext]];
+        
+        
+        Shopping.name = @"Shopping";
+        Shopping.color = [[UIColor greenColor] toString];
+        
+        
+        
+        
+        
+        [[self managedObjectContext] save:NULL];
+      
+        
+        NSLog(@"Results > 0 =  %2lu", (unsigned long)results.count);
+
+        
+    }
+    
+ 
+    
+     NSLog(@"Results > 0 =  %2lu", (unsigned long)results.count);
+    
     return YES;
 }
 

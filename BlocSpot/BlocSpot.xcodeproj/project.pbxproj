@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		173D46F21A1EE91E004B4342 /* UIColor+String.m in Sources */ = {isa = PBXBuildFile; fileRef = 173D46F11A1EE91E004B4342 /* UIColor+String.m */; };
 		177B4A251A0AD35400D9CC35 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 177B4A241A0AD35400D9CC35 /* main.m */; };
 		177B4A281A0AD35400D9CC35 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 177B4A271A0AD35400D9CC35 /* AppDelegate.m */; };
 		177B4A2B1A0AD35400D9CC35 /* BlocSpot.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 177B4A291A0AD35400D9CC35 /* BlocSpot.xcdatamodeld */; };
@@ -26,6 +27,7 @@
 		179793301A130B26003A7BF5 /* POICategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 1797932F1A130B26003A7BF5 /* POICategory.m */; };
 		179793321A1A4E8C003A7BF5 /* DismissSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 179793311A1A4E8C003A7BF5 /* DismissSegue.m */; };
 		179793341A1A4EC0003A7BF5 /* DismissSegue.h in Sources */ = {isa = PBXBuildFile; fileRef = 179793331A1A4EC0003A7BF5 /* DismissSegue.h */; };
+		179FCF5E1A1FDD6600F57BA2 /* CategoryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 179FCF5D1A1FDD6600F57BA2 /* CategoryPickerViewController.m */; };
 		F251F0DE08F0D76150664A29 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FBA60259C4670E6EE211F39 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +44,8 @@
 /* Begin PBXFileReference section */
 		02AAB89B335AD9F0D562BFE3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		0FBA60259C4670E6EE211F39 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		173D46F01A1EE91E004B4342 /* UIColor+String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+String.h"; sourceTree = "<group>"; };
+		173D46F11A1EE91E004B4342 /* UIColor+String.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+String.m"; sourceTree = "<group>"; };
 		177B4A1F1A0AD35400D9CC35 /* BlocSpot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlocSpot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		177B4A231A0AD35400D9CC35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		177B4A241A0AD35400D9CC35 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -74,6 +78,8 @@
 		1797932F1A130B26003A7BF5 /* POICategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POICategory.m; sourceTree = "<group>"; };
 		179793311A1A4E8C003A7BF5 /* DismissSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DismissSegue.m; sourceTree = "<group>"; };
 		179793331A1A4EC0003A7BF5 /* DismissSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DismissSegue.h; sourceTree = "<group>"; };
+		179FCF5C1A1FDD6600F57BA2 /* CategoryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPickerViewController.h; sourceTree = "<group>"; };
+		179FCF5D1A1FDD6600F57BA2 /* CategoryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPickerViewController.m; sourceTree = "<group>"; };
 		A14C3DBED26D4DAA1391C765 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -124,6 +130,8 @@
 			children = (
 				177B4A2F1A0AD35400D9CC35 /* Main.storyboard */,
 				177B4A291A0AD35400D9CC35 /* BlocSpot.xcdatamodeld */,
+				179FCF5C1A1FDD6600F57BA2 /* CategoryPickerViewController.h */,
+				179FCF5D1A1FDD6600F57BA2 /* CategoryPickerViewController.m */,
 				179793331A1A4EC0003A7BF5 /* DismissSegue.h */,
 				179793311A1A4E8C003A7BF5 /* DismissSegue.m */,
 				177B4A591A0D4ED300D9CC35 /* MyAnnotation.h */,
@@ -132,6 +140,8 @@
 				177B4A571A0D453900D9CC35 /* MapViewNavigationBar.m */,
 				177B4A261A0AD35400D9CC35 /* AppDelegate.h */,
 				177B4A271A0AD35400D9CC35 /* AppDelegate.m */,
+				173D46F01A1EE91E004B4342 /* UIColor+String.h */,
+				173D46F11A1EE91E004B4342 /* UIColor+String.m */,
 				177B4A531A0D436900D9CC35 /* MapListNavigationBar.h */,
 				177B4A541A0D436900D9CC35 /* MapListNavigationBar.m */,
 				177B4A501A0D18CB00D9CC35 /* MapKitViewController.h */,
@@ -337,6 +347,7 @@
 			files = (
 				1797932A1A130A73003A7BF5 /* POI.m in Sources */,
 				177B4A581A0D453900D9CC35 /* MapViewNavigationBar.m in Sources */,
+				173D46F21A1EE91E004B4342 /* UIColor+String.m in Sources */,
 				177B4A551A0D436900D9CC35 /* MapListNavigationBar.m in Sources */,
 				177B4A5E1A114E4A00D9CC35 /* MapAnnotationViewController.m in Sources */,
 				177B4A5B1A0D4ED300D9CC35 /* MyAnnotation.m in Sources */,
@@ -344,6 +355,7 @@
 				177B4A521A0D18CB00D9CC35 /* MapKitViewController.m in Sources */,
 				177B4A2B1A0AD35400D9CC35 /* BlocSpot.xcdatamodeld in Sources */,
 				177B4A281A0AD35400D9CC35 /* AppDelegate.m in Sources */,
+				179FCF5E1A1FDD6600F57BA2 /* CategoryPickerViewController.m in Sources */,
 				177B4A4F1A0C23E300D9CC35 /* LocationsViewController.m in Sources */,
 				179793301A130B26003A7BF5 /* POICategory.m in Sources */,
 				179793321A1A4E8C003A7BF5 /* DismissSegue.m in Sources */,

@@ -56,11 +56,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)goBack: (id)sender {
-    
-   
-    
-}
 
 - (IBAction)showCategoryActionSheet:(id)sender {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Pick a category:"
