@@ -8,8 +8,11 @@
 
 #import "MapAnnotationViewController.h"
 #import "MapKitViewController.h"
+#import "WYPopoverController.h"
+#import "CategoryPickerViewController.h"
 
-@interface MapAnnotationViewController () <UIActionSheetDelegate>
+
+@interface MapAnnotationViewController () <UIActionSheetDelegate, WYPopoverControllerDelegate>
 
 @property (nonatomic, strong) UITextField *textField;
 
@@ -58,17 +61,36 @@
 
 
 - (IBAction)showCategoryActionSheet:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Pick a category:"
-                                                             delegate:self
-                                                    cancelButtonTitle:nil
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:@"Food", @"Gas", @"Hotel", @"Entertainment", @"Shopping", nil];
-     
-    [actionSheet showInView:self.view];
+    
+    CategoryPickerViewController *pickCategory = [self.storyboard instantiateViewControllerWithIdentifier:@"CategoryPicker"];
+    
     
     
     
 }
+
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+     if ([[segue identifier] isEqualToString:@"chooseCategory"]) {
+         
+       ///  CategoryPickerViewController *categoryPicker = segue.destinationViewController;
+         
+       ///  NSManagedObject *selectedCategory =
+       ///
+      ///   categoryPicker.selectedCategory = selectedCategory;
+       ///
+         
+         NSLog(@"Pick a category");
+         
+     }
+    
+    
+    
+}
+
+
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     

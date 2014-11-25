@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 
 @interface CategoryPickerViewController : UITableViewController
+
+@property (strong) NSManagedObject *selectCategory;
 
 @end

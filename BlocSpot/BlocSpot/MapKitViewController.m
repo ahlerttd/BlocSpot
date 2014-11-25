@@ -13,6 +13,7 @@
 #import "AppDelegate.h"
 #import "POI.h"
 #import "POICategory.h"
+#import "WYStoryboardPopoverSegue.h"
 
 @class MapAnnotationViewController;
 
@@ -152,8 +153,6 @@
     
     [mapView deselectAnnotation:view.annotation animated:YES];
     
-    
-    
     MapAnnotationViewController *ycvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MapAnnotationViewController"];
     ycvc.delegate = self;
     
@@ -162,20 +161,29 @@
     ycvc.data = self.annotationTitleSelected;
     ycvc.mapNotesData = self.annotationNotes;
     
-    
-    
-    
-    
     poc.delegate = self;
     self.annotationPopoverController = poc;
     
-    
     poc.popoverContentSize = CGSizeMake(300, 200);
-    
     
     [poc presentPopoverFromRect:view.bounds inView:view permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
     
 }
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if ([[segue identifier] isEqualToString:@"mapAnnotationDetailView"]) {
+        
+        NSLog(@"Open Annotation Detail View");
+        
+        
+    }
+    
+    
+    
+}
+
 
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
@@ -438,13 +446,6 @@
     
     [self.mapView setUserTrackingMode:MKUserTrackingModeNone];
     
-    
-    
-}
-
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if (sender != self.list) return;
     
     
 }

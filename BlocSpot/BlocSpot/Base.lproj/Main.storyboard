@@ -134,6 +134,7 @@
                         <outlet property="list" destination="0pX-Xa-nzO" id="dFe-CF-s6J"/>
                         <outlet property="searchBar" destination="g9M-Df-p5u" id="DsY-OU-ohf"/>
                         <outlet property="searchDisplayController" destination="DPN-GY-aoh" id="OvV-ji-vC3"/>
+                        <segue destination="afV-Z7-40N" kind="modal" identifier="mapAnnotationDetailView" id="fYK-g2-n0X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k83-Uz-KmW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -177,7 +178,7 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                 <state key="normal" title="Category"/>
                                 <connections>
-                                    <action selector="showCategoryActionSheet:" destination="afV-Z7-40N" eventType="touchUpInside" id="FOP-Oa-yM0"/>
+                                    <segue destination="dWi-Ri-GRE" kind="modal" identifier="chooseCategory" id="U3l-G7-fGJ"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -213,6 +214,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="200" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="DUT-iQ-18q">
+                            <rect key="frame" x="0.0" y="0.0" width="200" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <items>
+                                <navigationItem title="Choose Category" id="bVK-iF-HZZ">
+                                    <barButtonItem key="leftBarButtonItem" title="Done" id="t6f-Zw-GXT">
+                                        <connections>
+                                            <segue destination="afV-Z7-40N" kind="custom" identifier="selectedCategory" id="5QA-Pf-p3t"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </navigationItem>
+                            </items>
+                        </navigationBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="vsw-Uk-fZT">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -226,6 +240,7 @@
                             <outlet property="delegate" destination="dWi-Ri-GRE" id="Vnw-bD-Ic1"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="gGq-ow-G1T"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="200" height="300"/>
                 </tableViewController>
@@ -261,7 +276,8 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="ZsW-ZH-g0l"/>
         <segue reference="INa-yo-y5z"/>
+        <segue reference="ZsW-ZH-g0l"/>
+        <segue reference="fYK-g2-n0X"/>
     </inferredMetricsTieBreakers>
 </document>
