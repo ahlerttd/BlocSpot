@@ -134,7 +134,6 @@
                         <outlet property="list" destination="0pX-Xa-nzO" id="dFe-CF-s6J"/>
                         <outlet property="searchBar" destination="g9M-Df-p5u" id="DsY-OU-ohf"/>
                         <outlet property="searchDisplayController" destination="DPN-GY-aoh" id="OvV-ji-vC3"/>
-                        <segue destination="afV-Z7-40N" kind="modal" identifier="mapAnnotationDetailView" id="fYK-g2-n0X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k83-Uz-KmW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -178,7 +177,7 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                 <state key="normal" title="Category"/>
                                 <connections>
-                                    <segue destination="dWi-Ri-GRE" kind="modal" identifier="chooseCategory" id="U3l-G7-fGJ"/>
+                                    <action selector="category:" destination="afV-Z7-40N" eventType="touchUpInside" id="JIy-Eg-Vhy"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -204,7 +203,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RvD-ee-tU7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="243" y="52"/>
+            <point key="canvasLocation" x="143" y="52"/>
         </scene>
         <!--Category Picker View Controller-->
         <scene sceneID="4Ju-Sk-INA">
@@ -276,8 +275,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="INa-yo-y5z"/>
         <segue reference="ZsW-ZH-g0l"/>
-        <segue reference="fYK-g2-n0X"/>
+        <segue reference="INa-yo-y5z"/>
     </inferredMetricsTieBreakers>
 </document>

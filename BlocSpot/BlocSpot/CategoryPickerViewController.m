@@ -89,7 +89,12 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    [self performSegueWithIdentifier:@"selectedCategory" sender:tableView];
+    ///[self performSegueWithIdentifier:@"selectedCategory" sender:tableView];
+    ///[self dismissViewControllerAnimated:YES completion:nil];
+    
+    POICategory *POICategory = [self.frc.fetchedObjects objectAtIndex:indexPath.row];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Category Selected" object: POICategory];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

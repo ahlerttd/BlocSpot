@@ -6,6 +6,12 @@
 // project.
 
 
+// PopoverView
+#define COCOAPODS_POD_AVAILABLE_PopoverView
+#define COCOAPODS_VERSION_MAJOR_PopoverView 0
+#define COCOAPODS_VERSION_MINOR_PopoverView 0
+#define COCOAPODS_VERSION_PATCH_PopoverView 2
+
 // WYPopoverController
 #define COCOAPODS_POD_AVAILABLE_WYPopoverController
 #define COCOAPODS_VERSION_MAJOR_WYPopoverController 0

@@ -52,7 +52,7 @@
         
         
         Shopping.name = @"Shopping";
-        Shopping.color = [[UIColor greenColor] toString];
+        Shopping.color = [[UIColor blueColor] toString];
         
         
         

@@ -14,6 +14,7 @@
 #import "POI.h"
 #import "POICategory.h"
 #import "WYStoryboardPopoverSegue.h"
+#import "PopoverView.h"
 
 @class MapAnnotationViewController;
 
@@ -23,6 +24,7 @@
 
 {
     WYPopoverController* popoverController;
+    MapAnnotationViewController *ycvc;
 }
 
 
@@ -36,6 +38,7 @@
 @property (nonatomic, strong) NSString *annotationTitleSelected;
 @property (nonatomic, strong) NSString *categorySelected;
 @property NSFetchedResultsController *frc;
+
 
 
 @end
@@ -153,10 +156,11 @@
     
     [mapView deselectAnnotation:view.annotation animated:YES];
     
-    MapAnnotationViewController *ycvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MapAnnotationViewController"];
+    ycvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MapAnnotationViewController"];
     ycvc.delegate = self;
     
     WYPopoverController *poc = [[WYPopoverController alloc] initWithContentViewController:ycvc];
+    
     
     ycvc.data = self.annotationTitleSelected;
     ycvc.mapNotesData = self.annotationNotes;

@@ -15,11 +15,28 @@
 @interface MapAnnotationViewController () <UIActionSheetDelegate, WYPopoverControllerDelegate>
 
 @property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) WYPopoverController *popover;
 
 
 @end
 
 @implementation MapAnnotationViewController
+
+- (IBAction)category:(id)sender {
+    
+    UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CategoryPicker"];
+    
+    self.popover = [[WYPopoverController alloc] initWithContentViewController:vc];
+    
+    
+    /// poc.delegate = self;
+    ///self.annotationPopoverController = poc;
+    
+     self.popover.popoverContentSize = CGSizeMake(300, 200);
+    
+    [self.popover presentPopoverFromRect:self.view.bounds inView:self.view permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
+
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -29,9 +46,15 @@
     
     self.textField.text = self.mapNotesData;
     
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categorySelected:) name:@"Category Selected" object:nil];
     
     // Do any additional setup after loading the view.
+}
+
+-(void) categorySelected: (NSNotification*) notification{
+    
+    [self.popover  dismissPopoverAnimated:YES];
+    
 }
 
 - (void)viewWillAppear: (BOOL)animated {
@@ -47,7 +70,7 @@
 
 
 - (void) viewDidDisappear:(BOOL)animated{
-    [self.delegate dismissPop:[self.notes text]];
+    ///[self.delegate dismissPop:[self.notes text]];
     NSLog(@"goback: sender: %@", [self.notes text]);
     
     
