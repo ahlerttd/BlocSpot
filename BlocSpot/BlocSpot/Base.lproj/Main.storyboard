@@ -197,6 +197,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="200" height="300"/>
                     <connections>
+                        <outlet property="categoryButton" destination="cLN-9X-pIC" id="Rjw-R3-K5L"/>
                         <outlet property="notes" destination="cmZ-vT-NYJ" id="Ihd-cc-P3u"/>
                         <outlet property="titlePopover" destination="hiQ-Nf-EYS" id="vZm-Qn-a57"/>
                     </connections>

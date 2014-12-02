@@ -10,12 +10,15 @@
 #import "MapKitViewController.h"
 #import "WYPopoverController.h"
 #import "CategoryPickerViewController.h"
+#import "POICategory.h"
+#import "UIColor+String.h"
 
 
-@interface MapAnnotationViewController () <UIActionSheetDelegate, WYPopoverControllerDelegate>
+@interface MapAnnotationViewController () <UIActionSheetDelegate, WYPopoverControllerDelegate, CategoryPickerViewControllerDelegate>
 
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) WYPopoverController *popover;
+
 
 
 @end
@@ -24,36 +27,56 @@
 
 - (IBAction)category:(id)sender {
     
-    UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CategoryPicker"];
+    CategoryPickerViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CategoryPicker"];
     
     self.popover = [[WYPopoverController alloc] initWithContentViewController:vc];
     
+    [self.popover setDelegate:self];
+    vc.delegate = self;
     
-    /// poc.delegate = self;
     ///self.annotationPopoverController = poc;
     
-     self.popover.popoverContentSize = CGSizeMake(300, 200);
+    self.popover.popoverContentSize = CGSizeMake(300, 200);
     
     [self.popover presentPopoverFromRect:self.view.bounds inView:self.view permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
-
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     
-    self.titlePopover.text = self.data;    
-    
+    self.titlePopover.text = self.data;
     self.textField.text = self.mapNotesData;
+    
+    NSString *categoryName = self.savedCategory.name;
+    UIColor *color = [UIColor fromString:self.savedCategory.color];
+    
+    if (categoryName != nil) {
+        [self.categoryButton setTitle:categoryName forState:UIControlStateNormal];
+        [self.categoryButton setTitleColor:color forState:UIControlStateNormal];
+    }
+    else {
+        
+        [self.categoryButton setTitle:@"Select a Category" forState:UIControlStateNormal];
+    }
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categorySelected:) name:@"Category Selected" object:nil];
     
-    // Do any additional setup after loading the view.
+    
 }
 
 -(void) categorySelected: (NSNotification*) notification{
     
     [self.popover  dismissPopoverAnimated:YES];
+    
+    UIColor *color = [UIColor fromString:self.selectedCategory.color];
+    [self.categoryButton setTitle:self.selectedCategory.name forState:UIControlStateNormal];
+    [self.categoryButton setTitleColor:color forState:UIControlStateNormal];
+    
+    
+    
     
 }
 
@@ -70,8 +93,10 @@
 
 
 - (void) viewDidDisappear:(BOOL)animated{
-    ///[self.delegate dismissPop:[self.notes text]];
-    NSLog(@"goback: sender: %@", [self.notes text]);
+    
+    [self.delegate passCategory:self.selectedCategory];
+    [self.delegate dismissPop:[self.notes text]];
+    
     
     
 }
@@ -83,63 +108,17 @@
 }
 
 
-- (IBAction)showCategoryActionSheet:(id)sender {
-    
-    CategoryPickerViewController *pickCategory = [self.storyboard instantiateViewControllerWithIdentifier:@"CategoryPicker"];
-    
-    
-    
-    
-}
 
 
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+-(void)dismissPop: (POICategory *)object {
     
-     if ([[segue identifier] isEqualToString:@"chooseCategory"]) {
-         
-       ///  CategoryPickerViewController *categoryPicker = segue.destinationViewController;
-         
-       ///  NSManagedObject *selectedCategory =
-       ///
-      ///   categoryPicker.selectedCategory = selectedCategory;
-       ///
-         
-         NSLog(@"Pick a category");
-         
-     }
-    
+    self.selectedCategory = object;
     
     
 }
 
 
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    
-    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-    self.categoryPicked = buttonTitle;
-    
-    [self.delegate addCategoryViewController:self didSelectCategory:self.categoryPicked];
-    
-}
-
-
-
-
-
-
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 
 @end

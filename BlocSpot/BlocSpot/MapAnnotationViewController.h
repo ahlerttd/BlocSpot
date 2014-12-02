@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "MapKitViewController.h"
+#import "AppDelegate.h"
+#import "POICategory.h"
 
 @protocol MapAnnotationViewControllerDelegate;
 
@@ -19,15 +21,18 @@
 @property (nonatomic, retain) NSString *data;
 @property (nonatomic, retain) NSString *mapNotesData;
 @property (weak) id <MapAnnotationViewControllerDelegate> delegate;
-@property (weak, nonatomic) NSString *categoryPicked;
+@property (weak, nonatomic) IBOutlet UIButton *categoryButton;
+@property (nonatomic, strong) POICategory *selectedCategory;
+@property (nonatomic, strong) POICategory *savedCategory;
+@property (nonatomic, strong) NSString *selectedCategoryString;
 
-- (IBAction)showCategoryActionSheet:(id)sender;
 
 @end
 
 @protocol MapAnnotationViewControllerDelegate <NSObject>
 
 -(void)dismissPop: (NSString *)value;
+-(void)passCategory: (NSManagedObject *)category;
 -(void)addCategoryViewController:(MapAnnotationViewController *)controller didSelectCategory:(NSString *)item;
 
 

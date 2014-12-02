@@ -8,9 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "POICategory.h"
+
+@protocol CategoryPickerViewControllerDelegate;
 
 @interface CategoryPickerViewController : UITableViewController
 
 @property (strong) NSManagedObject *selectCategory;
+@property (weak) id <CategoryPickerViewControllerDelegate> delegate;
+
+@end
+
+@protocol CategoryPickerViewControllerDelegate <NSObject>
+
+-(void)dismissPop: (POICategory *)object;
 
 @end

@@ -36,7 +36,9 @@
 @property (nonatomic, strong) MyAnnotation *annotation;
 @property (nonatomic, strong) NSString *annotationNotes;
 @property (nonatomic, strong) NSString *annotationTitleSelected;
-@property (nonatomic, strong) NSString *categorySelected;
+@property (nonatomic, strong) NSString *annotationCategorySelected;
+@property (nonatomic, strong) POICategory *categorySelected;
+@property (nonatomic, strong) POI *forSavedCategory;
 @property NSFetchedResultsController *frc;
 
 
@@ -163,7 +165,9 @@
     
     
     ycvc.data = self.annotationTitleSelected;
+    ycvc.selectedCategory = self.categorySelected;
     ycvc.mapNotesData = self.annotationNotes;
+    ycvc.savedCategory = self.categorySelected;
     
     poc.delegate = self;
     self.annotationPopoverController = poc;
@@ -205,48 +209,27 @@
     
     NSFetchRequest * request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"POI" inManagedObjectContext:context]];
-    [request setResultType:NSDictionaryResultType];
     [request setReturnsDistinctResults:YES];
-    [request setPropertiesToFetch:[NSArray arrayWithObjects: @"title", @"notes", @"latitude", @"longitude", @"isvisited", @"id", nil]];
+    [request setIncludesSubentities:YES];
     [request setPredicate:[NSPredicate predicateWithFormat:@"(title ==[c] %@)", annotation.title]];
     NSArray *results = [context executeFetchRequest:request error:nil];
     
     if (results.count == 0)
     {
         self.annotationNotes = nil;
+        self.annotationCategorySelected = @"Select a Category";
     }
     else
     {
         
-        for(NSDictionary *location in results) {
-            
-            NSLog(@"Results %@", results);
-            
-            self.annotationNotes = location [@"notes"];
-            
-            NSLog(@"Notes %@", self.annotationNotes);
-            
-        }
-        
+        POI* POI = [results objectAtIndex:0];
+        self.annotationNotes = POI.notes;
+        self.categorySelected = POI.category;
+        NSLog(@"Category Trevor %@, %@", self.categorySelected.name, self.categorySelected.color);
     }
     
 }
 
-
-
-
-- (BOOL)popoverControllerShouldDismissPopover:(WYPopoverController *)controller
-{
-    return YES;
-}
-
-- (void)popoverControllerDidDismissPopover:(WYPopoverController *)controller;
-{
-    popoverController.delegate = nil;
-    popoverController = nil;
-    
-    NSLog(@"Print dismiss");
-}
 
 - (void)dismissPop: (NSString *)value {
     
@@ -264,15 +247,12 @@
     [request setResultType:NSManagedObjectResultType];
     [request setReturnsDistinctResults:YES];
     [request setPredicate:[NSPredicate predicateWithFormat:@"(title ==[c] %@)", self.annotationTitleSelected]];
-    NSLog(@"Annotation Title %@", self.annotationTitleSelected);
     NSArray *results = [context executeFetchRequest:request error:nil];
     
     
     
     if (results.count == 0)
     {
-        
-        
         
         POI *POI;
         POI = [NSEntityDescription
@@ -285,26 +265,16 @@
         POI.notes = self.annotationNotes;
         POI.latitude = [NSNumber numberWithDouble: self.annotation.coordinate.latitude];
         POI.longitude = [NSNumber numberWithDouble:self.annotation.coordinate.longitude];
-        
-        
-        
-        
-        
+        POI.category = self.categorySelected;
         
         [context save:NULL];
-        
-        
-        
         
     }
     else {
         
-        NSLog(@"Edit a specific field");
-        
-        POI* favoritsGrabbed = [results objectAtIndex:0];
-        NSLog(@"Managed Object %@", favoritsGrabbed);
-        favoritsGrabbed.notes = self.annotationNotes;
-        NSLog(@"Annoation Notes  %@", self.annotationNotes);
+        POI* POI = [results objectAtIndex:0];
+        POI.notes = self.annotationNotes;
+        POI.category = self.categorySelected;
         
         [context save:NULL];
         
@@ -313,13 +283,25 @@
     
 }
 
--(void)addCategoryViewController:(MapAnnotationViewController *)controller didSelectCategory:(NSString *)item{
-    
-    self.categorySelected = item;
-    NSLog(@"Item %@", item);
+- (BOOL)popoverControllerShouldDismissPopover:(WYPopoverController *)controller
+{
+    return YES;
+}
+
+- (void)popoverControllerDidDismissPopover:(WYPopoverController *)controller;
+{
+    popoverController.delegate = nil;
+    popoverController = nil;
     
 }
 
+
+-(void)passCategory: (POICategory *)category; {
+    
+    self.categorySelected = category;
+    
+    
+}
 
 
 
@@ -337,9 +319,6 @@
         
         region = [self.mapView regionThatFits:region];
         [self.mapView setRegion:region animated:YES];
-        
-        NSLog(@"%f, %f", self.mapView.userLocation.location.coordinate.latitude,
-              self.mapView.userLocation.location.coordinate.longitude);
         
     }
     

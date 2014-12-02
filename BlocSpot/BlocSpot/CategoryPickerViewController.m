@@ -10,10 +10,13 @@
 #import "AppDelegate.h"
 #import "POICategory.h"
 #import "UIColor+String.h"
+#import "MapAnnotationViewController.h"
 
 @interface CategoryPickerViewController () <NSFetchedResultsControllerDelegate>
 
 @property NSFetchedResultsController *frc;
+@property POICategory *POICategory;
+
 
 @end
 
@@ -45,6 +48,11 @@
     self.frc.delegate = self;
     [self.frc performFetch:NULL];
     [self.tableView reloadData];
+    
+    
+}
+
+-(void) viewDidDisappear:(BOOL)animated{
     
     
 }
@@ -89,23 +97,15 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    ///[self performSegueWithIdentifier:@"selectedCategory" sender:tableView];
-    ///[self dismissViewControllerAnimated:YES completion:nil];
     
-    POICategory *POICategory = [self.frc.fetchedObjects objectAtIndex:indexPath.row];
+    self.POICategory = [self.frc.fetchedObjects objectAtIndex:indexPath.row];
+    [self.delegate dismissPop:self.POICategory];
+    
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Category Selected" object: POICategory];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Category Selected" object: self.POICategory];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    
-    if ([[segue identifier] isEqualToString:@"selectedCategory"]) {
-        NSLog(@"Category Chosen");
-    
-    
-}
-}
+
 
 
 @end
