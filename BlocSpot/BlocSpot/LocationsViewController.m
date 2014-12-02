@@ -9,6 +9,7 @@
 #import "LocationsViewController.h"
 #import "AppDelegate.h"
 #import "POI.h"
+#import "POICategory.h"
 
 @interface LocationsViewController () <NSFetchedResultsControllerDelegate>
 

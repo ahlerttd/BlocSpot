@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-PopoverView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-WYPopoverController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,22 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>6857BEDE5DF2E6660F9B9388</key>
+		<key>2827CB5075C208FC15743528</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6962D55643287DD1E1F4F2BC</key>
+		<key>50B1B79181547FF874EF99EE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8F701588D5A304FD1E9A9A85</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>BD7C31D302BF590E512D218B</key>
+		<key>D44BF56593EB4C006375180E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

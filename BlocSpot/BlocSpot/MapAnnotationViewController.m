@@ -8,27 +8,76 @@
 
 #import "MapAnnotationViewController.h"
 #import "MapKitViewController.h"
+#import "WYPopoverController.h"
+#import "CategoryPickerViewController.h"
+#import "POICategory.h"
+#import "UIColor+String.h"
 
-@interface MapAnnotationViewController () 
+
+@interface MapAnnotationViewController () <UIActionSheetDelegate, WYPopoverControllerDelegate, CategoryPickerViewControllerDelegate>
 
 @property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) WYPopoverController *popover;
+
 
 
 @end
 
 @implementation MapAnnotationViewController
 
+- (IBAction)category:(id)sender {
+    
+    CategoryPickerViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CategoryPicker"];
+    
+    self.popover = [[WYPopoverController alloc] initWithContentViewController:vc];
+    
+    [self.popover setDelegate:self];
+    vc.delegate = self;
+    
+    ///self.annotationPopoverController = poc;
+    
+    self.popover.popoverContentSize = CGSizeMake(300, 200);
+    
+    [self.popover presentPopoverFromRect:self.view.bounds inView:self.view permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     
-    self.titlePopover.text = self.data;    
-    
+    self.titlePopover.text = self.data;
     self.textField.text = self.mapNotesData;
     
+    NSString *categoryName = self.savedCategory.name;
+    UIColor *color = [UIColor fromString:self.savedCategory.color];
+    
+    if (categoryName != nil) {
+        [self.categoryButton setTitle:categoryName forState:UIControlStateNormal];
+        [self.categoryButton setTitleColor:color forState:UIControlStateNormal];
+    }
+    else {
+        
+        [self.categoryButton setTitle:@"Select a Category" forState:UIControlStateNormal];
+    }
     
     
-    // Do any additional setup after loading the view.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categorySelected:) name:@"Category Selected" object:nil];
+    
+    
+}
+
+-(void) categorySelected: (NSNotification*) notification{
+    
+    [self.popover  dismissPopoverAnimated:YES];
+    
+    UIColor *color = [UIColor fromString:self.selectedCategory.color];
+    [self.categoryButton setTitle:self.selectedCategory.name forState:UIControlStateNormal];
+    [self.categoryButton setTitleColor:color forState:UIControlStateNormal];
+    
+    
+    
+    
 }
 
 - (void)viewWillAppear: (BOOL)animated {
@@ -43,27 +92,33 @@
 }
 
 
+- (void) viewDidDisappear:(BOOL)animated{
+    
+    [self.delegate passCategory:self.selectedCategory];
+    [self.delegate dismissPop:[self.notes text]];
+    
+    
+    
+}
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)goBack: (id)sender {
+
+
+
+-(void)dismissPop: (POICategory *)object {
     
-    [self.delegate dismissPop:[self.notes text]];
-    NSLog(@"goback: sender: %@", [self.notes text]);
+    self.selectedCategory = object;
+    
     
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+
 
 
 @end

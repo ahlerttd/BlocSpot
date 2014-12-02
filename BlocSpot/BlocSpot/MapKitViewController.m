@@ -13,6 +13,8 @@
 #import "AppDelegate.h"
 #import "POI.h"
 #import "POICategory.h"
+#import "WYStoryboardPopoverSegue.h"
+#import "PopoverView.h"
 
 @class MapAnnotationViewController;
 
@@ -20,9 +22,10 @@
 @interface MapKitViewController () <MapKitViewControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, WYPopoverControllerDelegate, MapAnnotationViewControllerDelegate, NSFetchedResultsControllerDelegate>
 
 
-    {
-        WYPopoverController* popoverController;
-    }
+{
+    WYPopoverController* popoverController;
+    MapAnnotationViewController *ycvc;
+}
 
 
 
@@ -33,7 +36,11 @@
 @property (nonatomic, strong) MyAnnotation *annotation;
 @property (nonatomic, strong) NSString *annotationNotes;
 @property (nonatomic, strong) NSString *annotationTitleSelected;
+@property (nonatomic, strong) NSString *annotationCategorySelected;
+@property (nonatomic, strong) POICategory *categorySelected;
+@property (nonatomic, strong) POI *forSavedCategory;
 @property NSFetchedResultsController *frc;
+
 
 
 @end
@@ -104,7 +111,7 @@
     [self.mapView setRegion:startRegion animated:YES];
     
     
-  
+    
     
     for(NSDictionary *location in fetchedObjects) {
         CLLocationCoordinate2D annotationCoordinate =
@@ -151,30 +158,40 @@
     
     [mapView deselectAnnotation:view.annotation animated:YES];
     
-    
-    
-    MapAnnotationViewController *ycvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MapAnnotationViewController"];
+    ycvc = [self.storyboard instantiateViewControllerWithIdentifier:@"MapAnnotationViewController"];
     ycvc.delegate = self;
     
     WYPopoverController *poc = [[WYPopoverController alloc] initWithContentViewController:ycvc];
     
+    
     ycvc.data = self.annotationTitleSelected;
+    ycvc.selectedCategory = self.categorySelected;
     ycvc.mapNotesData = self.annotationNotes;
-    
-    
-  
-
+    ycvc.savedCategory = self.categorySelected;
     
     poc.delegate = self;
     self.annotationPopoverController = poc;
     
-
     poc.popoverContentSize = CGSizeMake(300, 200);
-    
     
     [poc presentPopoverFromRect:view.bounds inView:view permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
     
+}
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if ([[segue identifier] isEqualToString:@"mapAnnotationDetailView"]) {
+        
+        NSLog(@"Open Annotation Detail View");
+        
+        
     }
+    
+    
+    
+}
+
 
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
@@ -189,43 +206,82 @@
     
     NSManagedObjectContext *context =
     [appDelegate managedObjectContext];
-
+    
     NSFetchRequest * request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"POI" inManagedObjectContext:context]];
-    [request setResultType:NSDictionaryResultType];
     [request setReturnsDistinctResults:YES];
-    [request setPropertiesToFetch:[NSArray arrayWithObjects: @"title", @"notes", @"latitude", @"longitude", @"isvisited", @"id", nil]];
+    [request setIncludesSubentities:YES];
     [request setPredicate:[NSPredicate predicateWithFormat:@"(title ==[c] %@)", annotation.title]];
     NSArray *results = [context executeFetchRequest:request error:nil];
     
     if (results.count == 0)
     {
         self.annotationNotes = nil;
+        self.annotationCategorySelected = @"Select a Category";
     }
     else
     {
         
-        for(NSDictionary *location in results) {
-        
-        NSLog(@"Results %@", results);
-            
-            self.annotationNotes = location [@"notes"];
-            
-            NSLog(@"Notes %@", self.annotationNotes);
-            
-        }
-        
+        POI* POI = [results objectAtIndex:0];
+        self.annotationNotes = POI.notes;
+        self.categorySelected = POI.category;
+        NSLog(@"Category Trevor %@, %@", self.categorySelected.name, self.categorySelected.color);
     }
-    
-  
-    
-    
-    
     
 }
 
 
-
+- (void)dismissPop: (NSString *)value {
+    
+    self.annotationNotes = value; // populates data from popover
+    
+    
+    AppDelegate *appDelegate =
+    [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext *context =
+    [appDelegate managedObjectContext];
+    
+    NSFetchRequest * request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"POI" inManagedObjectContext:context]];
+    [request setResultType:NSManagedObjectResultType];
+    [request setReturnsDistinctResults:YES];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"(title ==[c] %@)", self.annotationTitleSelected]];
+    NSArray *results = [context executeFetchRequest:request error:nil];
+    
+    
+    
+    if (results.count == 0)
+    {
+        
+        POI *POI;
+        POI = [NSEntityDescription
+               insertNewObjectForEntityForName:@"POI"
+               inManagedObjectContext:context];
+        
+        if (self.annotation.title.length > 0) {
+            POI.title = self.annotation.title;
+        }
+        POI.notes = self.annotationNotes;
+        POI.latitude = [NSNumber numberWithDouble: self.annotation.coordinate.latitude];
+        POI.longitude = [NSNumber numberWithDouble:self.annotation.coordinate.longitude];
+        POI.category = self.categorySelected;
+        
+        [context save:NULL];
+        
+    }
+    else {
+        
+        POI* POI = [results objectAtIndex:0];
+        POI.notes = self.annotationNotes;
+        POI.category = self.categorySelected;
+        
+        [context save:NULL];
+        
+    }
+    
+    
+}
 
 - (BOOL)popoverControllerShouldDismissPopover:(WYPopoverController *)controller
 {
@@ -237,75 +293,15 @@
     popoverController.delegate = nil;
     popoverController = nil;
     
-    NSLog(@"Print dismiss");
-}
-
-- (void)dismissPop: (NSString *)value {
-    
-    self.annotationNotes = value; // populates data from popover
-    NSLog(@"Print Annotation Notes %@", value);
-    
-    AppDelegate *appDelegate =
-    [[UIApplication sharedApplication] delegate];
-    
-    NSManagedObjectContext *context =
-    [appDelegate managedObjectContext];
-    
-    NSFetchRequest * request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"POI" inManagedObjectContext:context]];
-    [request setResultType:NSDictionaryResultType];
-    [request setReturnsDistinctResults:YES];
-    [request setPropertiesToFetch:[NSArray arrayWithObjects: @"title", @"notes", @"latitude", @"longitude", @"isvisited", @"id", nil]];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"(title ==[c] %@)", self.annotationTitleSelected]];
-    NSLog(@"Annotation Title %@", self.annotationTitleSelected);
-    NSArray *results = [context executeFetchRequest:request error:nil];
-    
-    
-    
-    if (results.count == 0)
-    {
-    
-    
-    
-    POI *POI;
-    POI = [NSEntityDescription
-           insertNewObjectForEntityForName:@"POI"
-           inManagedObjectContext:context];
-    
-    if (self.annotation.title.length > 0) {
-        POI.title = self.annotation.title;
-    }
-    POI.notes = self.annotationNotes;
-    
-    
-    
-    POI.latitude = [NSNumber numberWithDouble: self.annotation.coordinate.latitude];
-    POI.longitude = [NSNumber numberWithDouble:self.annotation.coordinate.longitude];
-    
-    [context save:NULL];
-    
-    
-    
-    
-    }
-    else {
-        
-        NSLog(@"Edit a specific field");
-        
-        NSManagedObject* favoritsGrabbed = [results objectAtIndex:0];
-        NSLog(@"Managed Object %@", favoritsGrabbed);
-        [favoritsGrabbed setValue:self.annotationNotes forKey:@"notes"];
-        NSLog(@"Annoation Notes  %@", self.annotationNotes);
-        
-        [context save:NULL];
-    
-    }
-    
-    
 }
 
 
-
+-(void)passCategory: (POICategory *)category; {
+    
+    self.categorySelected = category;
+    
+    
+}
 
 
 
@@ -323,9 +319,6 @@
         
         region = [self.mapView regionThatFits:region];
         [self.mapView setRegion:region animated:YES];
-        
-        NSLog(@"%f, %f", self.mapView.userLocation.location.coordinate.latitude,
-              self.mapView.userLocation.location.coordinate.longitude);
         
     }
     
@@ -436,13 +429,6 @@
     
     [self.mapView setUserTrackingMode:MKUserTrackingModeNone];
     
-    
-    
-}
-
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if (sender != self.list) return;
     
     
 }

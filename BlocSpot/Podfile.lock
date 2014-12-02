@@ -1,7 +1,9 @@
 PODS:
+  - PopoverView (0.0.2)
   - WYPopoverController (0.1.8)
 
 DEPENDENCIES:
+  - PopoverView (~> 0.0.1)
   - WYPopoverController (from `https://github.com/nicolaschengdev/WYPopoverController.git`)
 
 EXTERNAL SOURCES:
@@ -9,6 +11,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/nicolaschengdev/WYPopoverController.git
 
 SPEC CHECKSUMS:
+  PopoverView: d1076b527c1b0c3dd1e61436f999eda09b300004
   WYPopoverController: 938c6f14f0255204199c003853aba8475f3f239c
 
 COCOAPODS: 0.34.4
