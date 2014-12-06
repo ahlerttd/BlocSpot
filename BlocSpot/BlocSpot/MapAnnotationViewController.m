@@ -47,6 +47,7 @@
     
     
     self.titlePopover.text = self.data;
+    [[self titlePopover] setFont:[UIFont systemFontOfSize:18]];
     self.textField.text = self.mapNotesData;
     
     NSString *categoryName = self.savedCategory.name;
@@ -54,17 +55,23 @@
     
     if (categoryName != nil) {
         [self.categoryButton setTitle:categoryName forState:UIControlStateNormal];
-        [self.categoryButton setTitleColor:color forState:UIControlStateNormal];
+        ///[self.categoryButton setTitleColor:color forState:UIControlStateNormal];
+        [self.categoryButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [self.categoryButton setBackgroundColor:color];
+        
+        
     }
     else {
         
-        [self.categoryButton setTitle:@"Select a Category" forState:UIControlStateNormal];
+        [self.categoryButton setTitle:@"Category" forState:UIControlStateNormal];
+        [self.categoryButton setBackgroundColor:[UIColor blackColor]];
+        [self.categoryButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categorySelected:) name:@"Category Selected" object:nil];
     
-    
+    categoryName = nil;
 }
 
 -(void) categorySelected: (NSNotification*) notification{
@@ -73,7 +80,8 @@
     
     UIColor *color = [UIColor fromString:self.selectedCategory.color];
     [self.categoryButton setTitle:self.selectedCategory.name forState:UIControlStateNormal];
-    [self.categoryButton setTitleColor:color forState:UIControlStateNormal];
+    [self.categoryButton setBackgroundColor:color];
+    ///[self.categoryButton setTitleColor:color forState:UIControlStateNormal];
     
     
     
@@ -118,6 +126,19 @@
 }
 
 
+- (IBAction)directions:(id)sender {
+    
+    CLLocationCoordinate2D coordinate =    CLLocationCoordinate2DMake(self.latitude,self.longitude);
+    NSLog(@"Lat %2F, long %2F", self.latitude, self.longitude);
+    
+    //create MKMapItem out of coordinates
+    MKPlacemark* placeMark = [[MKPlacemark alloc] initWithCoordinate:coordinate addressDictionary:nil];
+    MKMapItem* destination =  [[MKMapItem alloc] initWithPlacemark:placeMark];
+    if([destination respondsToSelector:@selector(openInMapsWithLaunchOptions:)])
+    {
+        [destination openInMapsWithLaunchOptions:@{MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving}];
+    }
+}
 
 
 

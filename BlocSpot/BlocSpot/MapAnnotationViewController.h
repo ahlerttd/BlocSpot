@@ -10,6 +10,7 @@
 #import "MapKitViewController.h"
 #import "AppDelegate.h"
 #import "POICategory.h"
+#import "POI.h"
 
 @protocol MapAnnotationViewControllerDelegate;
 
@@ -25,6 +26,10 @@
 @property (nonatomic, strong) POICategory *selectedCategory;
 @property (nonatomic, strong) POICategory *savedCategory;
 @property (nonatomic, strong) NSString *selectedCategoryString;
+@property (nonatomic, strong) POI *mapPOI;
+@property  CLLocationDegrees latitude;
+@property  CLLocationDegrees longitude;
+
 
 
 @end

@@ -40,6 +40,8 @@
 @property (nonatomic, strong) POICategory *categorySelected;
 @property (nonatomic, strong) POI *forSavedCategory;
 @property NSFetchedResultsController *frc;
+@property  CLLocationDegrees latitude;
+@property  CLLocationDegrees longitude;
 
 
 
@@ -96,9 +98,11 @@
         [self.locationManager requestWhenInUseAuthorization];
     }
     [self.locationManager startUpdatingLocation];
+    
+    
     self.mapView.showsUserLocation = YES;
     self.mapView.userInteractionEnabled = YES;
-    self.mapView.userTrackingMode = MKUserTrackingModeFollow;
+    self.mapView.userTrackingMode = MKUserTrackingModeNone;
     self.mapView.delegate = self;
     
     
@@ -123,7 +127,41 @@
         [self.mapView addAnnotation:annotation];
     }
     
+    
+    
+    
+    if ( self.editSpot )
+    {
+        CLLocationDegrees lat = [self.editSpot.latitude doubleValue];
+        CLLocationDegrees log = [self.editSpot.longitude doubleValue];
+        
+        CLLocation *newLocation = [[CLLocation alloc] initWithLatitude:lat longitude:log];
+        
+        
+        self.initialLocation = newLocation;
+        NSLog(@"POI passed %@", self.editSpot.title);
+        
+        MKCoordinateRegion region;
+        region.center.latitude = lat;
+        region.center.longitude = log;
+        region.span = MKCoordinateSpanMake(0.1, 0.1);
+        
+        region = [self.mapView regionThatFits:region];
+        
+        
+        [self.mapView setRegion:region animated:YES];
+        self.editSpot = nil;
+        
+    }
+    
+    else {
+        
+        
+      
+        
+    }
 }
+
 
 
 -(MKAnnotationView *)mapView: (MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation{
@@ -168,6 +206,9 @@
     ycvc.selectedCategory = self.categorySelected;
     ycvc.mapNotesData = self.annotationNotes;
     ycvc.savedCategory = self.categorySelected;
+    ycvc.latitude = self.latitude;
+    ycvc.longitude = self.longitude;
+    
     
     poc.delegate = self;
     self.annotationPopoverController = poc;
@@ -218,6 +259,9 @@
     {
         self.annotationNotes = nil;
         self.annotationCategorySelected = @"Select a Category";
+        self.latitude = annotation.coordinate.latitude;
+        self.longitude = annotation.coordinate.longitude;
+        
     }
     else
     {
@@ -225,7 +269,9 @@
         POI* POI = [results objectAtIndex:0];
         self.annotationNotes = POI.notes;
         self.categorySelected = POI.category;
-        NSLog(@"Category Trevor %@, %@", self.categorySelected.name, self.categorySelected.color);
+        self.latitude = [POI.latitude doubleValue];
+        self.longitude = [POI.longitude doubleValue];
+        
     }
     
 }
@@ -305,27 +351,56 @@
 
 
 
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+/*- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+ 
+ {
+ 
+ 
+ 
+ if ( !self.initialLocation ){
+ 
+ self.initialLocation = userLocation.location;
+ 
+ MKCoordinateRegion region;
+ region.center = self.mapView.userLocation.coordinate;
+ region.span = MKCoordinateSpanMake(0.1, 0.1);
+ 
+ region = [self.mapView regionThatFits:region];
+ /// [self.mapView setRegion:region animated:YES];
+ 
+ }
+ 
+ 
+ }
+ */
 
-{
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    if (!self.initialLocation){
     
-    if ( !self.initialLocation )
-    {
-        self.initialLocation = userLocation.location;
+    // If it's a relatively recent event, turn off updates to save power.
+    CLLocation* location = [locations lastObject];
+ ///   NSDate* eventDate = location.timestamp;
+    //NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+   // if (abs(howRecent) < 15.0) {
+        // If the event is recent, do something with it.
+        NSLog(@"latitude %+.6f, longitude %+.6f\n",
+              location.coordinate.latitude,
+              location.coordinate.longitude);
+        self.latitude = location.coordinate.latitude;
+        self.longitude = location.coordinate.longitude;
         
         MKCoordinateRegion region;
-        region.center = self.mapView.userLocation.coordinate;
+        region.center.latitude = location.coordinate.latitude;
+        region.center.longitude = location.coordinate.longitude;
         region.span = MKCoordinateSpanMake(0.1, 0.1);
         
         region = [self.mapView regionThatFits:region];
         [self.mapView setRegion:region animated:YES];
         
     }
-    
-    
+///}
 }
-
-
 
 
 

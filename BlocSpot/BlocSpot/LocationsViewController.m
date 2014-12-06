@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "POI.h"
 #import "POICategory.h"
+#import "MapKitViewController.h"
 
 @interface LocationsViewController () <NSFetchedResultsControllerDelegate>
 
@@ -45,8 +46,8 @@
     [self.frc performFetch:NULL];
     [self.tableView reloadData];
     
-   
-} 
+    
+}
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller{
     [self.tableView reloadData];
@@ -61,11 +62,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-  /// if (tableView == self.searchDisplayController.searchResultsTableView) {
-  ///      return [self.filteredTableData count];
- ///   } else {
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return [self.filteredTableData count];
+    } else {
         return [self.frc.fetchedObjects count];;
- ///   }
+    }
     
     
 }
@@ -82,14 +83,26 @@
     }
     
     
-    POI *POI = [self.frc.fetchedObjects objectAtIndex:indexPath.row];
+    POI *POI = nil;
     
+    if (tableView == self.searchDisplayController.searchResultsTableView){
+        POI = [self.filteredTableData objectAtIndex:indexPath.row];
+        NSString *title = [NSString stringWithFormat:@"%@", POI.title];
+        NSString *subTitle = [NSString stringWithFormat:@"%@", POI.notes];
+        
+        cell.textLabel.text = title;
+        cell.detailTextLabel.text = subTitle;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else {
+    
+    
+    POI = [self.frc.fetchedObjects objectAtIndex:indexPath.row];
     NSString *title = [NSString stringWithFormat:@"%@", POI.title];
     NSString *subTitle = [NSString stringWithFormat:@"%@", POI.notes];
     
     cell.textLabel.text = title;
     cell.detailTextLabel.text = subTitle;
-    
+    }
     
     return cell;
     
@@ -174,12 +187,30 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    if ([[segue identifier] isEqualToString:@"editSpot"]) {
+        MapKitViewController *MapKitViewController = segue.destinationViewController;
     
-    
+         if(sender == self.searchDisplayController.searchResultsTableView) {
+             
+             POI *selectedNote = [self.filteredTableData objectAtIndex:[[self.searchDisplayController.searchResultsTableView indexPathForSelectedRow] row]];
+             MapKitViewController.editSpot = selectedNote;
+             
+         }
+         else {
+             
+             
+             POI *selectedNote = [self.frc.fetchedObjects objectAtIndex:[[self.tableView indexPathForSelectedRow] row]];
+             
+             
+             MapKitViewController.editSpot = selectedNote;
+         }
+        
+        
 }
 
 
-
+}
+    
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

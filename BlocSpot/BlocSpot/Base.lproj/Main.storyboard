@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="kYh-tp-hec">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C78c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="kYh-tp-hec">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -117,16 +117,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="7nN-bp-Yje" firstAttribute="leading" secondItem="V8Q-Rs-t2S" secondAttribute="leadingMargin" id="0fK-Vo-tci"/>
+                            <constraint firstItem="7nN-bp-Yje" firstAttribute="leading" secondItem="V8Q-Rs-t2S" secondAttribute="leadingMargin" constant="-16" id="0fK-Vo-tci"/>
                             <constraint firstItem="9Am-R7-9RJ" firstAttribute="top" secondItem="V8Q-Rs-t2S" secondAttribute="topMargin" constant="20" id="1I9-ST-HTa"/>
                             <constraint firstAttribute="bottomMargin" secondItem="7nN-bp-Yje" secondAttribute="bottom" id="8VF-YL-Sry"/>
-                            <constraint firstItem="g9M-Df-p5u" firstAttribute="leading" secondItem="V8Q-Rs-t2S" secondAttribute="leadingMargin" id="AfG-8h-XDy"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="g9M-Df-p5u" secondAttribute="trailing" id="JrG-gN-yIx"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="7nN-bp-Yje" secondAttribute="trailing" id="SU9-cb-R5y"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="9Am-R7-9RJ" secondAttribute="trailing" id="TCW-tf-uh0"/>
-                            <constraint firstItem="7nN-bp-Yje" firstAttribute="top" secondItem="g9M-Df-p5u" secondAttribute="bottom" constant="5" id="eMG-Jt-Vux"/>
-                            <constraint firstItem="9Am-R7-9RJ" firstAttribute="leading" secondItem="V8Q-Rs-t2S" secondAttribute="leadingMargin" id="iNj-Nw-84E"/>
-                            <constraint firstItem="g9M-Df-p5u" firstAttribute="top" secondItem="9Am-R7-9RJ" secondAttribute="bottom" constant="5" id="mnv-cM-dot"/>
+                            <constraint firstItem="g9M-Df-p5u" firstAttribute="leading" secondItem="V8Q-Rs-t2S" secondAttribute="leadingMargin" constant="-16" id="AfG-8h-XDy"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="g9M-Df-p5u" secondAttribute="trailing" constant="-16" id="JrG-gN-yIx"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7nN-bp-Yje" secondAttribute="trailing" constant="-16" id="SU9-cb-R5y"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9Am-R7-9RJ" secondAttribute="trailing" constant="-16" id="TCW-tf-uh0"/>
+                            <constraint firstItem="7nN-bp-Yje" firstAttribute="top" secondItem="g9M-Df-p5u" secondAttribute="bottom" id="eMG-Jt-Vux"/>
+                            <constraint firstItem="9Am-R7-9RJ" firstAttribute="leading" secondItem="V8Q-Rs-t2S" secondAttribute="leadingMargin" constant="-16" id="iNj-Nw-84E"/>
+                            <constraint firstItem="g9M-Df-p5u" firstAttribute="top" secondItem="9Am-R7-9RJ" secondAttribute="bottom" id="mnv-cM-dot"/>
                         </constraints>
                     </view>
                     <connections>
@@ -161,7 +161,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="200" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Location Notes" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cmZ-vT-NYJ">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Location Notes" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cmZ-vT-NYJ">
                                 <rect key="frame" x="16" y="97" width="168" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -173,22 +173,41 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cLN-9X-pIC">
-                                <rect key="frame" x="16" y="135" width="67" height="30"/>
+                                <rect key="frame" x="16" y="135" width="150" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="sjj-Ld-lHj"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                 <state key="normal" title="Category"/>
                                 <connections>
                                     <action selector="category:" destination="afV-Z7-40N" eventType="touchUpInside" id="JIy-Eg-Vhy"/>
                                 </connections>
                             </button>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B37-UK-rut">
+                                <rect key="frame" x="0.0" y="256" width="200" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <barButtonItem systemItem="action" id="chK-zz-6EW"/>
+                                    <barButtonItem image="gps_device-32" width="30" id="fxc-0E-Ebg">
+                                        <connections>
+                                            <action selector="directions:" destination="afV-Z7-40N" id="NBF-m7-cP0"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="hiQ-Nf-EYS" firstAttribute="leading" secondItem="Xe2-vD-LhN" secondAttribute="leadingMargin" id="7Fb-9A-tNj"/>
+                            <constraint firstItem="B37-UK-rut" firstAttribute="top" secondItem="cLN-9X-pIC" secondAttribute="bottom" constant="10" id="7nz-N5-q7e"/>
+                            <constraint firstItem="jiP-UT-ULU" firstAttribute="top" secondItem="B37-UK-rut" secondAttribute="bottom" id="AKh-5r-kLT"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="B37-UK-rut" secondAttribute="trailing" constant="-16" id="FcD-Jb-TQ5"/>
                             <constraint firstItem="cmZ-vT-NYJ" firstAttribute="leading" secondItem="Xe2-vD-LhN" secondAttribute="leadingMargin" id="P6i-gr-4uI"/>
                             <constraint firstItem="hiQ-Nf-EYS" firstAttribute="top" secondItem="9xg-xk-X14" secondAttribute="bottom" constant="5" id="SKb-sC-D0y"/>
+                            <constraint firstItem="B37-UK-rut" firstAttribute="leading" secondItem="Xe2-vD-LhN" secondAttribute="leadingMargin" constant="-16" id="U3f-ng-6UZ"/>
                             <constraint firstItem="cmZ-vT-NYJ" firstAttribute="trailing" secondItem="Xe2-vD-LhN" secondAttribute="trailingMargin" id="aou-eC-L7w"/>
                             <constraint firstAttribute="trailingMargin" secondItem="hiQ-Nf-EYS" secondAttribute="trailing" id="glr-tX-Ihn"/>
-                            <constraint firstItem="jiP-UT-ULU" firstAttribute="top" secondItem="cLN-9X-pIC" secondAttribute="bottom" constant="20" id="o1Y-zn-AIb"/>
                             <constraint firstItem="cmZ-vT-NYJ" firstAttribute="top" secondItem="hiQ-Nf-EYS" secondAttribute="bottom" constant="5" id="pvM-9P-n0X"/>
                             <constraint firstItem="cLN-9X-pIC" firstAttribute="leading" secondItem="Xe2-vD-LhN" secondAttribute="leadingMargin" id="tEJ-tH-nfw"/>
                         </constraints>
@@ -267,6 +286,7 @@
     </scenes>
     <resources>
         <image name="filter-25" width="25" height="25"/>
+        <image name="gps_device-32" width="32" height="32"/>
         <image name="map-25" width="25" height="25"/>
         <image name="menu-25" width="25" height="25"/>
     </resources>
@@ -276,7 +296,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="ZsW-ZH-g0l"/>
         <segue reference="INa-yo-y5z"/>
+        <segue reference="ZsW-ZH-g0l"/>
     </inferredMetricsTieBreakers>
 </document>

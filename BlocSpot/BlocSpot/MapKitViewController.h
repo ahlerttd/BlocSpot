@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "MapAnnotationViewController.h"
+#import "POI.h"
 
 
 @class MapKitViewController;
@@ -25,6 +26,7 @@
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property BOOL userLocationUpdated;
 @property (nonatomic, weak) id <MapKitViewControllerDelegate> delegate;
+@property (strong) POI *editSpot;
 
 
 

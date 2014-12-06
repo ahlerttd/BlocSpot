@@ -89,6 +89,7 @@
     NSString *subTitle = [NSString stringWithFormat:@"%@", POICategory.color];
     
     cell.textLabel.text = title;
+    cell.textColor = [UIColor whiteColor];
     cell.backgroundColor = [UIColor fromString:subTitle];
     
     return cell;
