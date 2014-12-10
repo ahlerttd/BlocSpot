@@ -31,6 +31,7 @@
 
 
 - (IBAction)listView:(id)sender;
+-(UIImage *)coloredImage:(UIImage *)firstImage withColor:(UIColor *)color;
 
 
 

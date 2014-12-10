@@ -15,6 +15,7 @@
 #import "POICategory.h"
 #import "WYStoryboardPopoverSegue.h"
 #import "PopoverView.h"
+#import "UIColor+String.h"
 
 @class MapAnnotationViewController;
 
@@ -38,6 +39,7 @@
 @property (nonatomic, strong) NSString *annotationTitleSelected;
 @property (nonatomic, strong) NSString *annotationCategorySelected;
 @property (nonatomic, strong) POICategory *categorySelected;
+@property (nonatomic, strong) POICategory *categoryForColor;
 @property (nonatomic, strong) POI *forSavedCategory;
 @property NSFetchedResultsController *frc;
 @property  CLLocationDegrees latitude;
@@ -65,26 +67,10 @@
     NSEntityDescription *entity = [NSEntityDescription
                                    entityForName:@"POI" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
-    [fetchRequest setResultType:NSDictionaryResultType];
     [fetchRequest setReturnsDistinctResults:YES];
-    [fetchRequest setPropertiesToFetch:[NSArray arrayWithObjects: @"title", @"notes", @"latitude", @"longitude", @"isvisited", @"id", nil]];
+    [fetchRequest setIncludesSubentities:YES];
     
-    
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects: sortDescriptor, nil];
-    
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    
-    
-    self.frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:NULL cacheName:NULL];
-    
-    self.frc.delegate = nil;
-    [self.frc performFetch:NULL];
-    
-    NSArray *fetchedObjects = [self.frc fetchedObjects];
-    
-    NSLog(@"Fetched objects %@", fetchedObjects);
-    
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:nil];
     
     [self.searchDisplayController setDelegate:self];
     [self.searchBar setDelegate:self];
@@ -105,25 +91,31 @@
     self.mapView.userTrackingMode = MKUserTrackingModeNone;
     self.mapView.delegate = self;
     
-    
-    
-    
     CLLocationCoordinate2D startCenter = CLLocationCoordinate2DMake(39.432679, -84.217259);
     CLLocationDistance regionWidth = 1500;
     CLLocationDistance regionHeight = 1500;
     MKCoordinateRegion startRegion = MKCoordinateRegionMakeWithDistance(startCenter, regionWidth, regionHeight);
     [self.mapView setRegion:startRegion animated:YES];
     
-    
-    
-    
-    for(NSDictionary *location in fetchedObjects) {
+    for (int i = 0; i < [fetchedObjects count]; i++){
+        
+        
+        POI *POI = [fetchedObjects objectAtIndex:i];
+        self.categoryForColor = POI.category;
+        NSLog(@"self.categoryforcolor %@", self.categoryForColor.color);
         CLLocationCoordinate2D annotationCoordinate =
-        CLLocationCoordinate2DMake([location [@"latitude"] doubleValue], [location [@"longitude"]doubleValue]);
+        CLLocationCoordinate2DMake([POI.latitude doubleValue], [POI.longitude  doubleValue]);
         MyAnnotation *annotation = [[MyAnnotation alloc]init];
         annotation.coordinate = annotationCoordinate;
-        annotation.title = location[@"title"];
+        annotation.title = POI.title;
         annotation.subtitle =  nil;
+        UIColor *color = [UIColor fromString:self.categoryForColor.color];
+        
+        if (color) {
+            annotation.color = color;
+        }
+       
+        NSLog(@"Annotation Color view did load %@", annotation.color);
         [self.mapView addAnnotation:annotation];
     }
     
@@ -156,13 +148,8 @@
     
     else {
         
-        
-      
-        
     }
 }
-
-
 
 -(MKAnnotationView *)mapView: (MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation{
     
@@ -187,9 +174,46 @@
     if([annotation isKindOfClass:[MKUserLocation class]]){
         return nil;
     }
+    /// -(UIImage *)coloredImage:(UIImage *)firstImage withColor:(UIColor *)color
     
+    
+    
+    MyAnnotation *myAnnotation = (MyAnnotation *)view.annotation;
+    
+    if (((MyAnnotation *)annotation).color) {
+        UIImage *heartImage = [UIImage imageNamed:@"like-26.png"];
+        UIColor *imageColor = ((MyAnnotation *)annotation).color;
+        heartImage = [self coloredImage:heartImage withColor: imageColor];
+        NSLog(@"My Annotation Color Annotation View %@", ((MyAnnotation *)annotation).color);
+        view.image = heartImage;
+    }
+    
+    NSLog(@"Yes");
     view.image = [UIImage imageNamed:@"like-26.png"];
     return view;
+}
+
+-(UIImage *)coloredImage:(UIImage *)firstImage withColor:(UIColor *)color {
+    UIGraphicsBeginImageContext(firstImage.size);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [color setFill];
+    
+    CGContextTranslateCTM(context, 0, firstImage.size.height);
+    CGContextScaleCTM(context, 1.0, -1.0);
+    
+    CGContextSetBlendMode(context, kCGBlendModeCopy);
+    CGRect rect = CGRectMake(0, 0, firstImage.size.width, firstImage.size.height);
+    CGContextDrawImage(context, rect, firstImage.CGImage);
+    
+    CGContextClipToMask(context, rect, firstImage.CGImage);
+    CGContextAddRect(context, rect);
+    CGContextDrawPath(context,kCGPathElementMoveToPoint);
+    
+    UIImage *coloredImg = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return coloredImg;
 }
 
 - (void)mapView:(MKMapView *)mapView  annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
@@ -326,7 +350,7 @@
         
     }
     
-    
+    self.categorySelected = nil;
 }
 
 - (BOOL)popoverControllerShouldDismissPopover:(WYPopoverController *)controller
@@ -377,12 +401,12 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     if (!self.initialLocation){
-    
-    // If it's a relatively recent event, turn off updates to save power.
-    CLLocation* location = [locations lastObject];
- ///   NSDate* eventDate = location.timestamp;
-    //NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
-   // if (abs(howRecent) < 15.0) {
+        
+        // If it's a relatively recent event, turn off updates to save power.
+        CLLocation* location = [locations lastObject];
+        ///   NSDate* eventDate = location.timestamp;
+        //NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+        // if (abs(howRecent) < 15.0) {
         // If the event is recent, do something with it.
         NSLog(@"latitude %+.6f, longitude %+.6f\n",
               location.coordinate.latitude,
@@ -399,7 +423,7 @@
         [self.mapView setRegion:region animated:YES];
         
     }
-///}
+    ///}
 }
 
 
