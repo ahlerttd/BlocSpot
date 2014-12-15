@@ -12,7 +12,6 @@
 #import "UIColor+String.h"
 #import "MapAnnotationViewController.h"
 #import "MyAnnotation.h"
-#import "POICategory.h"
 
 
 

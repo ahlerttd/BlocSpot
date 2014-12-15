@@ -11,11 +11,16 @@
 #import "POI.h"
 #import "POICategory.h"
 #import "MapKitViewController.h"
+#import "FilterViewController.h"
+#import "WYPopoverController.h"
+#import "UIColor+String.h"
 
-@interface LocationsViewController () <NSFetchedResultsControllerDelegate>
+@interface LocationsViewController () <NSFetchedResultsControllerDelegate, WYPopoverControllerDelegate, FilterViewControllerDelegate>
 
 @property NSFetchedResultsController *frc;
 @property NSArray *filteredTableData;
+@property (nonatomic, strong) WYPopoverController *popover;
+@property (nonatomic, strong) POICategory *selectedCategory;
 
 @end
 
@@ -34,6 +39,14 @@
                                    entityForName:@"POI" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     
+    [fetchRequest setReturnsDistinctResults:YES];
+    [fetchRequest setIncludesSubentities:YES];
+    
+    if (self.selectedCategory) {
+         [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(category.name ==[c] %@)", self.selectedCategory.name]];
+    }
+   
+    
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects: sortDescriptor, nil];
     
@@ -46,7 +59,84 @@
     [self.frc performFetch:NULL];
     [self.tableView reloadData];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categorySelected:) name:@"Filter Selected" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(allSelected:) name:@"All Selected" object:nil];
+    
+   /// categoryName = nil;
+}
+
+-(void) allSelected: (NSNotification*) notification{
+ 
+    [self.popover  dismissPopoverAnimated:YES];
+    
+    AppDelegate *appDelegate =
+    [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext *context =
+    [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"POI" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    [fetchRequest setReturnsDistinctResults:YES];
+    [fetchRequest setIncludesSubentities:YES];
+    
+    
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects: sortDescriptor, nil];
+    
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    
+    self.frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:NULL cacheName:NULL];
+    
+    self.frc.delegate = self;
+    [self.frc performFetch:NULL];
+    
+    [self.tableView reloadData];
+
+    
+}
+
+
+-(void) categorySelected: (NSNotification*) notification{
+    
+    [self.popover  dismissPopoverAnimated:YES];
+    
+    AppDelegate *appDelegate =
+    [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext *context =
+    [appDelegate managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"POI" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    
+    [fetchRequest setReturnsDistinctResults:YES];
+    [fetchRequest setIncludesSubentities:YES];
+    
+    if (self.selectedCategory) {
+        [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(category.name ==[c] %@)", self.selectedCategory.name]];
+    }
+    
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects: sortDescriptor, nil];
+    
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    
+    self.frc = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:NULL cacheName:NULL];
+    
+    self.frc.delegate = self;
+    [self.frc performFetch:NULL];
+    
+    [self.tableView reloadData];
+   
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller{
@@ -93,7 +183,44 @@
         cell.textLabel.text = title;
         cell.detailTextLabel.text = subTitle;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else {
+    }
+    
+   /* else if (tableView != self.searchDisplayController.searchResultsTableView) {
+        
+        if (self.selectedCategory != nil);{
+        
+        AppDelegate *appDelegate =
+        [[UIApplication sharedApplication] delegate];
+        
+        NSManagedObjectContext *context =
+        [appDelegate managedObjectContext];
+        
+        NSFetchRequest * request = [[NSFetchRequest alloc] init];
+        [request setEntity:[NSEntityDescription entityForName:@"POI" inManagedObjectContext:context]];
+        [request setReturnsDistinctResults:YES];
+        [request setIncludesSubentities:YES];
+        [request setPredicate:[NSPredicate predicateWithFormat:@"(title ==[c] %@)", self.selectedCategory.name]];
+        NSArray *results = [context executeFetchRequest:request error:nil];
+        
+            if (results.count == 0) {
+            
+            }
+            
+            else {
+            
+            POI = [results objectAtIndex:0];
+        NSString *title = [NSString stringWithFormat:@"%@", POI.title];
+        NSString *subTitle = [NSString stringWithFormat:@"%@", POI.notes];
+        
+        cell.textLabel.text = title;
+        cell.detailTextLabel.text = subTitle;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+    }
+    
+    }*/
+    
+    else {
     
     
     POI = [self.frc.fetchedObjects objectAtIndex:indexPath.row];
@@ -210,7 +337,34 @@
 
 
 }
+
+- (IBAction)filter:(id)sender {
+
+    FilterViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"FilterPicker"];
     
+    self.popover = [[WYPopoverController alloc] initWithContentViewController:vc];
+    
+    [self.popover setDelegate:self];
+    vc.delegate = self;
+    
+    ///self.annotationPopoverController = poc;
+    
+    self.popover.popoverContentSize = CGSizeMake(200, 200);
+    
+    [self.popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES];
+    
+
+
+}
+
+-(void)dismissPop: (POICategory *)object {
+    
+    self.selectedCategory = object;
+    NSLog(@"Category Filter: %@", self.selectedCategory.name);
+    
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

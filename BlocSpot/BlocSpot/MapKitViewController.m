@@ -20,12 +20,13 @@
 @class MapAnnotationViewController;
 
 
-@interface MapKitViewController () <MapKitViewControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, WYPopoverControllerDelegate, MapAnnotationViewControllerDelegate, NSFetchedResultsControllerDelegate>
+@interface MapKitViewController () <MapKitViewControllerDelegate, CLLocationManagerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, WYPopoverControllerDelegate, MapAnnotationViewControllerDelegate, NSFetchedResultsControllerDelegate>
 
 
 {
     WYPopoverController* popoverController;
     MapAnnotationViewController *ycvc;
+    BOOL _didStartMonitoringRegion;
 }
 
 
@@ -33,6 +34,7 @@
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, retain) CLLocation *initialLocation;
+@property (strong, nonatomic) NSMutableArray *geofences;
 @property (nonatomic, strong) WYPopoverController *annotationPopoverController;
 @property (nonatomic, strong) MyAnnotation *annotation;
 @property (nonatomic, strong) NSString *annotationNotes;
@@ -178,9 +180,9 @@
     
     
     
-    MyAnnotation *myAnnotation = (MyAnnotation *)view.annotation;
+    MyAnnotation *myAnnotation = (MyAnnotation *)annotation;
     
-    if (((MyAnnotation *)annotation).color) {
+    if (myAnnotation.color) {
         UIImage *heartImage = [UIImage imageNamed:@"like-26.png"];
         UIColor *imageColor = ((MyAnnotation *)annotation).color;
         heartImage = [self coloredImage:heartImage withColor: imageColor];
@@ -188,8 +190,11 @@
         view.image = heartImage;
     }
     
+    else{
+    
     NSLog(@"Yes");
     view.image = [UIImage imageNamed:@"like-26.png"];
+    }
     return view;
 }
 

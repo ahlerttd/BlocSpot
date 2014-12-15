@@ -12,9 +12,9 @@
 @interface MyAnnotation : NSObject <MKAnnotation>
 
 @property CLLocationCoordinate2D coordinate;
-@property (weak, nonatomic) NSString *title;
-@property (weak, nonatomic) NSString *subtitle;
-@property (weak, nonatomic) UIColor *color;
+@property (strong, nonatomic) NSString *title;
+@property (strong, nonatomic) NSString *subtitle;
+@property (strong, nonatomic) UIColor *color;
 
 -(id)initWithTitle:(NSString * )newTitle subTitle: (NSString *)newSubTitle location:(CLLocationCoordinate2D)location;
 - (MKAnnotationView *)annotationView;

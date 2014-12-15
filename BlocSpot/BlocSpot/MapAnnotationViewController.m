@@ -140,6 +140,15 @@
     }
 }
 
+- (IBAction)share:(id)sender {
+    NSString *shareString = @"hello";
+    UIActivityViewController *activityViewController =
+    [[UIActivityViewController alloc] initWithActivityItems:@[shareString]
+                                      applicationActivities:nil];
+    [self presentViewController:activityViewController
+                                       animated:YES
+                                          completion:nil];
+}
 
 
 @end
