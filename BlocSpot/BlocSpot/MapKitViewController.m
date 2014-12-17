@@ -79,6 +79,8 @@
     
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
+    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+    self.locationManager.pausesLocationUpdatesAutomatically = YES;
     // Check for iOS 8 Vs earlier version like iOS7.Otherwise code will
     // crash on ios 7
     if ([self.locationManager respondsToSelector:@selector
@@ -86,6 +88,11 @@
         [self.locationManager requestWhenInUseAuthorization];
     }
     [self.locationManager startUpdatingLocation];
+    
+    // Load Geofences
+    self.geofences = [NSMutableArray arrayWithArray:[[self.locationManager monitoredRegions] allObjects]];
+    
+    NSLog(@"Print Geofences: %@", self.geofences);
     
     
     self.mapView.showsUserLocation = YES;
@@ -116,8 +123,18 @@
         if (color) {
             annotation.color = color;
         }
-       
-        NSLog(@"Annotation Color view did load %@", annotation.color);
+        
+        CLLocationDegrees lat = [POI.latitude doubleValue];
+        CLLocationDegrees log = [POI.longitude doubleValue];
+        CLLocation *newLocation = [[CLLocation alloc] initWithLatitude:lat longitude:log];
+        
+        CLRegion *region = [[CLRegion alloc] initCircularRegionWithCenter:[newLocation coordinate] radius:500.0 identifier:[[NSUUID UUID] UUIDString]];
+        
+        // Start Monitoring Region
+        [self.locationManager startMonitoringForRegion:region];
+        
+        
+        
         [self.mapView addAnnotation:annotation];
     }
     
@@ -133,7 +150,6 @@
         
         
         self.initialLocation = newLocation;
-        NSLog(@"POI passed %@", self.editSpot.title);
         
         MKCoordinateRegion region;
         region.center.latitude = lat;
@@ -186,14 +202,12 @@
         UIImage *heartImage = [UIImage imageNamed:@"like-26.png"];
         UIColor *imageColor = ((MyAnnotation *)annotation).color;
         heartImage = [self coloredImage:heartImage withColor: imageColor];
-        NSLog(@"My Annotation Color Annotation View %@", ((MyAnnotation *)annotation).color);
         view.image = heartImage;
     }
     
     else{
-    
-    NSLog(@"Yes");
-    view.image = [UIImage imageNamed:@"like-26.png"];
+        
+        view.image = [UIImage imageNamed:@"like-26.png"];
     }
     return view;
 }
@@ -253,11 +267,7 @@
     
     if ([[segue identifier] isEqualToString:@"mapAnnotationDetailView"]) {
         
-        NSLog(@"Open Annotation Detail View");
-        
-        
     }
-    
     
     
 }
@@ -537,8 +547,38 @@
     
 }
 
+#pragma mark - GeoFence
 
 
+- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
+{
+    
+    NSLog(@"Entered Region");
+    
+    if ([[UIApplication sharedApplication] applicationState] != UIApplicationStateActive) {
+        UILocalNotification *reminder = [[UILocalNotification alloc] init];
+        [reminder setFireDate:[NSDate date]];
+        [reminder setTimeZone:[NSTimeZone localTimeZone]];
+        [reminder setHasAction:YES];
+        [reminder setAlertAction:@"Show"];
+        [reminder setSoundName:@"bell.mp3"];
+        [reminder setAlertBody:@"Boundary crossed!"];
+        [[UIApplication sharedApplication] scheduleLocalNotification:reminder];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Show an alert or otherwise notify the user
+        });
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
+{
+    
+}
+- (void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
+{
+    
+}
 
 
 @end

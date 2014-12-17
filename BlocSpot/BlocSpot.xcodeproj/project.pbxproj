@@ -266,6 +266,9 @@
 					177B4A1E1A0AD35400D9CC35 = {
 						CreatedOnToolsVersion = 6.1;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Maps.iOS = {
 								enabled = 1;
 							};

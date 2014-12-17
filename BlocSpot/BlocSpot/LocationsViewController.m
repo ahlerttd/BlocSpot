@@ -184,41 +184,7 @@
         cell.detailTextLabel.text = subTitle;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    
-   /* else if (tableView != self.searchDisplayController.searchResultsTableView) {
-        
-        if (self.selectedCategory != nil);{
-        
-        AppDelegate *appDelegate =
-        [[UIApplication sharedApplication] delegate];
-        
-        NSManagedObjectContext *context =
-        [appDelegate managedObjectContext];
-        
-        NSFetchRequest * request = [[NSFetchRequest alloc] init];
-        [request setEntity:[NSEntityDescription entityForName:@"POI" inManagedObjectContext:context]];
-        [request setReturnsDistinctResults:YES];
-        [request setIncludesSubentities:YES];
-        [request setPredicate:[NSPredicate predicateWithFormat:@"(title ==[c] %@)", self.selectedCategory.name]];
-        NSArray *results = [context executeFetchRequest:request error:nil];
-        
-            if (results.count == 0) {
-            
-            }
-            
-            else {
-            
-            POI = [results objectAtIndex:0];
-        NSString *title = [NSString stringWithFormat:@"%@", POI.title];
-        NSString *subTitle = [NSString stringWithFormat:@"%@", POI.notes];
-        
-        cell.textLabel.text = title;
-        cell.detailTextLabel.text = subTitle;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            }
-    }
-    
-    }*/
+   
     
     else {
     

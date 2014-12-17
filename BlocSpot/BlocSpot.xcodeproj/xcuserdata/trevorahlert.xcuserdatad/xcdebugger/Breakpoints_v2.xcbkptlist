@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BlocSpot/MapKitViewController.m"
-            timestampString = "439870980.596194"
+            timestampString = "440373518.565124"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BlocSpot/MapKitViewController.m"
-            timestampString = "439873446.472529"
+            timestampString = "440449927.873803"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "441"
-            endingLineNumber = "441"
+            startingLineNumber = "453"
+            endingLineNumber = "453"
             landmarkName = "-listView:"
             landmarkType = "5">
          </BreakpointContent>
